@@ -3,10 +3,15 @@
 [ext_resource path="res://trolley/Trolley.gd" type="Script" id=1]
 [ext_resource path="res://placeholders/placeholder.png" type="Texture" id=2]
 
-[sub_resource type="ConvexPolygonShape2D" id=2]
+[sub_resource type="ConvexPolygonShape2D" id=1]
 
 custom_solver_bias = 0.0
 points = Vector2Array( -24.63, -28.4995, 25.1265, -28.4995, 24.8345, 49.4616, -23.9277, 49.1696 )
+
+[sub_resource type="ConvexPolygonShape2D" id=2]
+
+custom_solver_bias = 0.0
+points = Vector2Array( -23.9277, -28.7915, -24.5116, -48.6467, 24.2505, -48.6467, 25.092, -28.5768 )
 
 [sub_resource type="ConvexPolygonShape2D" id=3]
 
@@ -16,22 +21,18 @@ points = Vector2Array( -23.9277, -28.7915, -24.5116, -48.6467, 24.2505, -48.6467
 [sub_resource type="ConvexPolygonShape2D" id=4]
 
 custom_solver_bias = 0.0
-points = Vector2Array( -23.9277, -28.7915, -24.5116, -48.6467, 24.2505, -48.6467, 25.092, -28.5768 )
+points = Vector2Array( 25.092, 49.981, 24.0902, -28.3713, 37.5297, -28.3713, 37.2662, 49.8942 )
 
 [sub_resource type="ConvexPolygonShape2D" id=5]
 
 custom_solver_bias = 0.0
 points = Vector2Array( 25.092, 49.981, 24.0902, -28.3713, 37.5297, -28.3713, 37.2662, 49.8942 )
 
-[sub_resource type="ConvexPolygonShape2D" id=6]
-
-custom_solver_bias = 0.0
-points = Vector2Array( 25.092, 49.981, 24.0902, -28.3713, 37.5297, -28.3713, 37.2662, 49.8942 )
-
 [node name="Trolley" type="KinematicBody2D"]
 
+transform/pos = Vector2( -0.323532, -31.0592 )
 input/pickable = false
-shapes/0/shape = SubResource( 2 )
+shapes/0/shape = SubResource( 1 )
 shapes/0/transform = Matrix32( 1, 0, 0, 1, 0, 0 )
 shapes/0/trigger = false
 collision/layers = 1
@@ -45,6 +46,10 @@ texture = ExtResource( 2 )
 region = true
 region_rect = Rect2( 150, 20, 50, 99 )
 
+[node name="bucket" type="YSort" parent="."]
+
+sort/enabled = true
+
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
 
 build_mode = 0
@@ -56,16 +61,16 @@ trigger = false
 
 transform/pos = Vector2( -0.35849, -0.358482 )
 input/pickable = true
-shapes/0/shape = SubResource( 3 )
+shapes/0/shape = SubResource( 2 )
 shapes/0/transform = Matrix32( 1, 0, 0, 1, 0, 0 )
 shapes/0/trigger = false
-shapes/1/shape = SubResource( 4 )
+shapes/1/shape = SubResource( 3 )
 shapes/1/transform = Matrix32( 1, 0, 0, 1, 0.643913, 98.3046 )
 shapes/1/trigger = false
-shapes/2/shape = SubResource( 5 )
+shapes/2/shape = SubResource( 4 )
 shapes/2/transform = Matrix32( 1, 0, 0, 1, 0, 0 )
 shapes/2/trigger = false
-shapes/3/shape = SubResource( 6 )
+shapes/3/shape = SubResource( 5 )
 shapes/3/transform = Matrix32( 1, 0, 0, 1, -61.4002, -0.263519 )
 shapes/3/trigger = false
 gravity_vec = Vector2( 0, 1 )

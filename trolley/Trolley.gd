@@ -2,23 +2,29 @@ extends KinematicBody2D
 
 var weight = 1
 var max_speed = 500
-var acc = 200
-var speed = 500
+var acc = 500
+var dcc = 0.08
+var speed = 0
 var player_in_area = false
 var player_is_connected = false
 onready var player = get_parent().get_node("player")
 var pl_pos
+var space_just_pressed = false
+var items = []
+var velocity = Vector2()
 
 func _ready():
 	set_process_input(true)
 	set_process(true)
 var old_space = false
 var space_changed = false
+
+
 func _process(delta):
-	var space_just_pressed = false
+	space_just_pressed = false
 	if space_key==false and old_space==true:
 		space_just_pressed = true
-	if space_just_pressed and player_in_area:
+	if space_just_pressed and player_in_area and not player.item:
 		if player_is_connected:
 			remove_collision_exception_with(player)
 			remove_player_collision()
@@ -26,24 +32,57 @@ func _process(delta):
 			add_collision_exception_with(player)
 			add_player_collision()
 		player_is_connected = !player_is_connected
-	
+	elif player.item != null and space_just_pressed and player_in_area:
+		items.append(player.item)
+		player.item = null
+		var i = player.get_node("item")
+		player.remove_child(i)
+		var p = i.get_pos()
+		p.y -= (items.size() + randi() % 5) - 30
+		p.x += (randi() % 20) - 10
+		i.set_pos(p)
+		get_node("bucket").add_child(i)
+		#speed = speed * 0.9
+		
+		
+	var mov = Vector2()
+	pl_pos = player.get_pos() - get_pos()
 	if player_is_connected:
-		pl_pos = player.get_pos() - get_pos()
-		var mov = Vector2()
+		var input_ = false
 		if Input.is_action_pressed("ui_up"):
-			mov.y -= speed
+			velocity.y -= acc * delta
+			input_ = true
 		if Input.is_action_pressed("ui_down"):
-			mov.y += speed
+			velocity.y += acc * delta
+			input_ = true
 		if Input.is_action_pressed("ui_left"):
-			mov.x -= speed
+			velocity.x -= acc * delta
+			input_ = true
 		if Input.is_action_pressed("ui_right"):
-			mov.x += speed
-			
-		move(mov * delta)
-		if is_colliding():
-			var n = get_collision_normal()
-			mov = n.slide(mov * delta)
-			move(mov)
+			velocity.x += acc * delta
+			input_ = true
+		if !input_:
+			if velocity.length() < 50:
+				velocity = Vector2()
+			if velocity.length() - dcc >= 10:
+				velocity -= velocity * dcc/8
+	else:
+		if velocity.length() < 50:
+			velocity = Vector2()
+		if velocity.length() - dcc >= 10:
+			velocity -= velocity * dcc/8
+	if player_is_connected:
+		if velocity.length() >= max_speed:
+			velocity.clamped(max_speed)
+		
+	move(velocity * delta)
+	if is_colliding():
+		var n = get_collision_normal()
+#			velocity = velocity.normalized() * -0.5 * velocity
+		velocity = n.slide(mov * delta)
+		mov = n.slide(mov * delta)
+		move(mov)
+	if player_is_connected:
 		player.set_pos(pl_pos + get_pos())
 	old_space = space_key
 func _on_pushing_area_area_enter( area ):
