@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=1]
+[gd_scene load_steps=4 format=1]
 
 [ext_resource path="res://placeholders/placeholder.png" type="Texture" id=1]
+[ext_resource path="res://item_spawner/Item.gd" type="Script" id=2]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 
@@ -13,6 +14,7 @@ transform/pos = Vector2( -0.858559, -25.1127 )
 texture = ExtResource( 1 )
 region = true
 region_rect = Rect2( 184, 146, 31, 50 )
+script/script = ExtResource( 2 )
 
 [node name="damage_area" type="Area2D" parent="."]
 
@@ -32,5 +34,9 @@ build_mode = 0
 polygon = Vector2Array( -13.6147, -21.1179, 6.34672, -22.4057, 11.9273, -17.6837, 13.8591, 18.161, 5.27352, 22.6684, -10.8244, 21.3806, -13.6147, 10.0047 )
 shape_range = Vector2( 0, 0 )
 trigger = false
+
+[connection signal="area_enter" from="damage_area" to="." method="_on_damage_area_area_enter"]
+
+[connection signal="area_exit" from="damage_area" to="." method="_on_damage_area_area_exit"]
 
 
