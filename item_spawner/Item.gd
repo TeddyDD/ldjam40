@@ -1,6 +1,6 @@
 extends Sprite
 
-var weight = 10
+var weight = 1
 
 var player = null
 var trolley = null
@@ -9,7 +9,7 @@ var dcc = 25
 
 func _ready():
 	set_fixed_process(true)
-
+	dcc *= weight
 var force_ = 0
 var flies = false
 
