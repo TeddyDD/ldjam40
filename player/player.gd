@@ -3,7 +3,7 @@ extends KinematicBody2D
 const speed = 250
 var mov = Vector2()
 onready var trolley = get_parent().get_node("Trolley")
-var item = false
+var item = null
 
 func _ready():
 	set_process(true)
@@ -29,7 +29,7 @@ func _process(delta):
 		remove_child(item)
 		get_parent().add_child(item)
 		item.set_global_pos(p)
-		item.throw()
+		item.throw(mov)
 		item = null
 	
 	move(mov * delta)
