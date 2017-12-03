@@ -35,9 +35,14 @@ class Sorter:
 		
 
 func _on_hit_area_area_enter( area ):
+	if area.get_parent().is_in_group("spawner"):
+#	if area.get_name() == "pick_area":
+		prints("NEAR SPAWNER")
+#		if not area.get_parent().inventory.is_empty():
+		close_to = area.get_parent()
 	if area.is_in_group("item"):
-		prints("in group intem")
 		if area.get_parent().flies == true:
 			hit_by = area.get_parent()
 		elif area.get_parent().is_active == true:
 			close_to = area.get_parent()
+

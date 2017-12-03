@@ -28,6 +28,6 @@ func prepare(inNewStateID):
 	pass
 
 func transitionCondition(inDeltaTime, inParam0=null, inParam1=null, inParam2=null, inParam3=null, inParam4=null): 
-	if getFSM().stateTime() > 3:
+	if getFSM().stateTime() > 1:
 		return true
 	return false

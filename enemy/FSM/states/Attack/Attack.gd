@@ -26,6 +26,9 @@ func stateInit(inParam1=null,inParam2=null,inParam3=null,inParam4=null, inParam5
 func enter(fromStateID=null, fromTransitionID=null, inArg0=null,inArg1=null, inArg2=null):
 	if getLogicRoot().close_to.is_in_group("item"):
 		getLogicRoot().inventory.pick_up(getLogicRoot().close_to)
+	elif getLogicRoot().close_to.is_in_group("spawner"):
+		if not getLogicRoot().close_to.inventory.is_empty():
+			getLogicRoot().close_to.inventory.move_item_to(0, getLogicRoot().inventory)
 	
 
 #when updating state, paramx can be used only if updating fsm manually

@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=1]
+[gd_scene load_steps=20 format=1]
 
 [ext_resource path="res://enemy/enemy.gd" type="Script" id=1]
 [ext_resource path="res://placeholders/placeholder.png" type="Texture" id=2]
@@ -14,7 +14,9 @@
 [ext_resource path="res://enemy/FSM/transitions/have_item/have_item.tscn" type="PackedScene" id=12]
 [ext_resource path="res://enemy/FSM/transitions/is_hit/is_hit.tscn" type="PackedScene" id=13]
 [ext_resource path="res://enemy/FSM/transitions/three_seconds_passed/three_seconds_passed.tscn" type="PackedScene" id=14]
-[ext_resource path="res://inventory.tscn" type="PackedScene" id=15]
+[ext_resource path="res://enemy/FSM/transitions/not_have_item/not_have_item.tscn" type="PackedScene" id=15]
+[ext_resource path="res://enemy/FSM/transitions/not_have_item/not_have_item.gd" type="Script" id=16]
+[ext_resource path="res://inventory.tscn" type="PackedScene" id=17]
 
 [sub_resource type="CircleShape2D" id=1]
 
@@ -24,8 +26,8 @@ radius = 11.6619
 [sub_resource type="CapsuleShape2D" id=2]
 
 custom_solver_bias = 0.0
-radius = 35.0
-height = 84.0
+radius = 19.0
+height = 80.0
 
 [node name="enemy" type="KinematicBody2D"]
 
@@ -88,7 +90,7 @@ updateMode = 1
 "Create new:/Create state with name:" = null
 "Create new:/Create transition with name:" = null
 GraphData = {
-"Attack": Vector2( 570.5, 447 ),
+"Attack": Vector2( 784.5, 247 ),
 "Attack_": Vector2( 570.5, 447 ),
 "Attack__": Vector2( 570.5, 447 ),
 "ON_GROUND": Vector2( 103.5, 443 ),
@@ -125,6 +127,7 @@ GraphData = {
 "is_hit": Vector2( 169.5, 348 ),
 "is_hit_": Vector2( 169.5, 348 ),
 "is_hit__": Vector2( 169.5, 348 ),
+"not_have_item": Vector2( 673.5, 152 ),
 "three_seconds_passed": Vector2( 534.5, 254 ),
 "three_seconds_passed_": Vector2( 534.5, 254 ),
 "three_seconds_passed__": Vector2( 534.5, 254 )
@@ -169,7 +172,14 @@ path2TargetState = NodePath("../../States/ON_GROUND")
 path2SourceStates = [ NodePath(""), NodePath("../../States/followingTarget") ]
 path2TargetState = NodePath("../../States/idle")
 
-[node name="inventory" parent="." instance=ExtResource( 15 )]
+[node name="not_have_item" type="Node" parent="FSM2D/Transitions" instance=ExtResource( 15 )]
+
+script/script = ExtResource( 16 )
+path2SourceStates = [ NodePath(""), NodePath("../../States/Attack") ]
+path2TargetState = NodePath("../../States/idle")
+intervalBetweenChecks = -1.0
+
+[node name="inventory" parent="." instance=ExtResource( 17 )]
 
 [node name="debug" type="Label" parent="."]
 
