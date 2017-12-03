@@ -2,6 +2,7 @@ extends KinematicBody2D
 
 var target = null # node
 var taget_list = []
+var hit_by = null
 
 # class member variables go here, for example:
 # var a = 2
@@ -20,3 +21,9 @@ class Sorter:
 		return a.get_pos().distance_squared_to(self.my_pos) < \
 		b.get_pos().distance_squared_to(self.my_pos)
 		
+
+func _on_hit_area_area_enter( area ):
+	if area.is_in_group("item"):
+		prints("in group intem")
+		if area.get_parent().flies == true:
+			hit_by = area.get_parent()

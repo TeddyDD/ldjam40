@@ -6,12 +6,13 @@ var player = null
 var trolley = null
 var vel = Vector2()
 var dcc = 25
+var force_ = 0
+var flies = false
 
 func _ready():
 	set_fixed_process(true)
 	dcc *= weight
-var force_ = 0
-var flies = false
+
 
 func _fixed_process(delta):
 	if player != null:
@@ -24,7 +25,6 @@ func _fixed_process(delta):
 	if flies:
 		var nt_pos = ((get_pos() + vel * delta).snapped(Vector2(64, 64))/Vector2(64, 64))
 		var next_tile_id = get_node("/root/game/TileMap").get_cellv(nt_pos)
-		print(next_tile_id)
 #		if not ( next_tile_id in [1, 2] ):
 		if !get_node("KinematicBody2D").test_move(vel * delta):
 			#if set_pos(get_pos() + vel * delta)
@@ -32,7 +32,6 @@ func _fixed_process(delta):
 		else:
 			var d_ = get_node("KinematicBody2D").move(vel * delta)
 			get_node("KinematicBody2D").move(-get_node("KinematicBody2D").get_travel())
-			print("in while", d_)
 			set_pos(get_pos()+vel.normalized()*d_*delta)
 			vel = Vector2()
 #			set_pos((get_pos() + vel * delta).snapped(Vector2(64, 64))/Vector2(64, 64))
