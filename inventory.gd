@@ -3,10 +3,10 @@ extends Node2D
 export var capacity = 1 # -1 = infinity
 var items = []
 
-func can_add_item():
+func is_full():
 	if capacity == -1:
-		return true
-	return items.size() < capacity
+		return false
+	return items.size() >= capacity
 
 func is_empty():
 	return items.empty()

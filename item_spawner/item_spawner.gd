@@ -11,7 +11,7 @@ var inventory
 func _ready():
 	inventory = get_node("inventory")
 	inventory.capacity = item_ammount
-	while inventory.can_add_item():
+	while not inventory.is_full():
 		inventory.add_item(load("res://item_spawner/%s.tscn" % item_type).instance())
 	set_process(true)
 	
