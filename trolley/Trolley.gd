@@ -1,11 +1,10 @@
 extends KinematicBody2D
-
+var DROP_ITEM_SPEED = 3
 var weight = 1
 const WEIGHT_FACTOR = 2
 var max_speed = 500
 var acc = 500
 var dcc = 0.08
-var speed = 0
 var player_in_area = false
 var player_is_connected = false
 onready var player = get_parent().get_node("player")
@@ -76,12 +75,29 @@ func _process(delta):
 		if velocity.length() >= max_speed:
 			velocity.clamped(max_speed)
 		
-	move(velocity * delta)
+	var other_fix = move(velocity * delta)
 	if is_colliding():
 		var n = get_collision_normal()
-#			velocity = velocity.normalized() * -0.5 * velocity
 		velocity = n.slide(mov * delta)
 		mov = n.slide(mov * delta)
+		var coll = get_collider()
+		if coll:
+			if coll extends TileMap:
+				var c_pos = get_collision_pos()
+				var c_mov = move(mov)
+				move(-get_travel())
+				var pos__ = Vector2(round((c_pos+c_mov).x/64),
+						round((c_pos+c_mov).y/64))
+				var fix = Vector2()
+				if other_fix.x < 0:
+					fix += Vector2(-1, 0)
+				if other_fix.y < 0:
+					fix += Vector2(0, -1)
+				var id_of_tile = coll.get_cellv(pos__ + fix)
+				var name_of_tile = coll.get_tileset().tile_get_name(id_of_tile)
+				if name_of_tile in ["wall", "shelf"]:
+					if other_fix.length() > DROP_ITEM_SPEED and !items.empty():
+						drop_item(other_fix)
 		move(mov)
 	if player_is_connected:
 		player.set_pos(pl_pos + get_pos())
@@ -91,6 +107,14 @@ func _on_pushing_area_area_enter( area ):
 		player_in_area = true
 		set_process(true)
 
+func drop_item(other_fix):
+	var i = randi()%items.size()
+	var n = get_node("bucket").get_child(i)
+	var old_p = n.get_global_pos()
+	get_node("/root/game").reparent(n, get_node("/root/game/YSort"))
+	n.set_global_pos(old_p)
+	n.throw(other_fix*5)
+	items.remove(i)
 func _on_pushing_area_area_exit( area ):
 	if area.get_name() == "player_area":
 		player_in_area = false
@@ -107,7 +131,7 @@ func remove_player_collision():
 var space_key = false
 var prev = false
 func _input(event):
-#	print("gsfddsa")
+
 	if event.type == InputEvent.KEY:
 		if event.is_action("ui_accept"):
 			if event.is_pressed():
