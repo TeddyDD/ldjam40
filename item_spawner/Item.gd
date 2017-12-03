@@ -5,12 +5,14 @@ var weight = 10
 var player = null
 var trolley = null
 var vel = Vector2()
+var dcc = 25
+
 func _ready():
 	set_fixed_process(true)
 
 var force_ = 0
 var flies = false
-	
+
 func _fixed_process(delta):
 	if player != null:
 		if Input.is_action_pressed("ui_accept") and player.item == null:
@@ -35,12 +37,16 @@ func _fixed_process(delta):
 			vel = Vector2()
 #			set_pos((get_pos() + vel * delta).snapped(Vector2(64, 64))/Vector2(64, 64))
 			end_throw()
+		if vel.length() - dcc > 10:
+			vel = vel.clamped(vel.length() - dcc)
+		else:
+			vel = Vector2()
 
 func throw(direction, force=null):
 
 	var pos = get_global_pos()
 	flies = true
-	get_tree().get_root().get_node("game").reparent(self, get_node("/root/game"))
+	get_tree().get_root().get_node("game").reparent(self, get_node("/root/game/YSort"))
 	set_global_pos(pos)
 	var force_ = 1000
 	if force:
