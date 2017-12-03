@@ -13,7 +13,10 @@ var space_just_pressed = false
 var items = []
 var velocity = Vector2()
 
+var inventory
+
 func _ready():
+	inventory = get_node("inventory")
 	set_process_input(true)
 	set_process(true)
 
@@ -24,24 +27,20 @@ func _process(delta):
 	_input_space_key()
 	if space_just_pressed and\
 			player_in_area and\
-			not player.item:
+			player.inventory.is_empty():
 		if player_is_connected:
 			remove_player_collision()
 		else:
 			add_player_collision()
 		player_is_connected = !player_is_connected
-	elif player.item != null and space_just_pressed and player_in_area:
-		items.append(player.item)
-		player.item = null
-		var i = player.get_node("item")
-		player.remove_child(i)
-		var p = i.get_pos()
-		p.y -= (items.size() + randi() % 5) - 30
-		p.x += (randi() % 20) - 10
-		i.set_pos(p)
-		get_node("bucket").add_child(i)
-		weight += i.weight
-	
+	elif not player.inventory.is_empty()\
+			and space_just_pressed\
+			and player_in_area:
+		if not inventory.is_full():
+			player.inventory.items[0].deactivate()
+			player.inventory.move_item_to(0,inventory)
+		weight += inventory.items.back().weight
+		inventory.items.back().deactivate()
 	var mov = Vector2()
 	player_delta_pos = player.get_pos() - get_pos()
 	if player_is_connected:

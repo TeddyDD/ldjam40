@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=1]
+[gd_scene load_steps=9 format=1]
 
 [ext_resource path="res://trolley/Trolley.gd" type="Script" id=1]
 [ext_resource path="res://placeholders/placeholder.png" type="Texture" id=2]
+[ext_resource path="res://inventory.tscn" type="PackedScene" id=3]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 
@@ -109,6 +110,10 @@ build_mode = 0
 polygon = Vector2Array( 25.092, 49.981, 24.0902, -28.3713, 37.5297, -28.3713, 37.2662, 49.8942 )
 shape_range = Vector2( 3, 3 )
 trigger = false
+
+[node name="inventory" parent="." instance=ExtResource( 3 )]
+
+transform/pos = Vector2( 1.29413, 16.8237 )
 
 [connection signal="area_enter" from="pushing_area" to="." method="_on_pushing_area_area_enter"]
 

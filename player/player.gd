@@ -26,13 +26,17 @@ func _process(delta):
 		mov.x -= speed
 	if Input.is_action_pressed("ui_right"):
 		mov.x += speed
-	if Input.is_action_pressed("throw") and item != null:
-		var p = item.get_global_pos()
-		remove_child(item)
-		get_parent().add_child(item)
-		item.set_global_pos(p)
-		item.throw(mov)
-		item = null
+	if Input.is_action_pressed("throw") and not inventory.is_empty():
+#		var p = item.get_global_pos()
+#		remove_child(item)
+#		get_parent().add_child(item)
+#		item.set_global_pos(p)
+		var i = inventory.items.front()
+		i.activate()
+		inventory.drop_item(0)
+		i.throw(mov)
+#		item.throw(mov)
+#		item = null
 	
 	move(mov * delta)
 	system.slide_body(self, mov, delta)

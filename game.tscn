@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=1]
+[gd_scene load_steps=7 format=1]
 
 [ext_resource path="res://game.gd" type="Script" id=1]
 [ext_resource path="res://placeholders/tileset-placeholder.tres" type="TileSet" id=2]
 [ext_resource path="res://trolley/Trolley.tscn" type="PackedScene" id=3]
 [ext_resource path="res://player/player.tscn" type="PackedScene" id=4]
 [ext_resource path="res://enemy/enemy.tscn" type="PackedScene" id=5]
+[ext_resource path="res://item_spawner/item_spawner.tscn" type="PackedScene" id=6]
 
 [node name="game" type="Node2D"]
 
@@ -49,5 +50,9 @@ transform/pos = Vector2( 491.034, 384.142 )
 [node name="enemy" parent="YSort" instance=ExtResource( 5 )]
 
 transform/pos = Vector2( 320, -128 )
+
+[node name="item_spawner" parent="." instance=ExtResource( 6 )]
+
+transform/pos = Vector2( 0, 192 )
 
 
