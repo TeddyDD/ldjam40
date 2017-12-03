@@ -2,7 +2,7 @@ extends KinematicBody2D
 
 const speed = 250
 var mov = Vector2()
-onready var trolley = get_parent().get_node("Trolley")
+onready var trolley = system.trolley
 var item = null
 
 func _ready():
@@ -33,7 +33,4 @@ func _process(delta):
 		item = null
 	
 	move(mov * delta)
-	if is_colliding():
-		var n = get_collision_normal()
-		mov = n.slide(mov * delta)
-		move(mov)
+	system.slide_body(self, mov, delta)
