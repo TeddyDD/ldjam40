@@ -21,12 +21,8 @@ func _process(delta):
 	if _is_there_a_player and\
 			not player.item and\
 			Input.is_action_pressed("ui_accept"):
-		var n = load("res://item_spawner/%s.tscn" % item_type).instance()
-		n.set_name("item")
-		player.item = n
-		player.add_child(n)
-		if not inventory.is_empty():
-			inventory.move_item_to(0, player.get_node("inventory"))
+		if not inventory.is_empty() and not player.inventory.is_full():
+			inventory.move_item_to(0, player.inventory)
 		
 		
 
