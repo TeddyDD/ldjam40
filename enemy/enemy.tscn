@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=1]
+[gd_scene load_steps=18 format=1]
 
 [ext_resource path="res://enemy/enemy.gd" type="Script" id=1]
 [ext_resource path="res://placeholders/placeholder.png" type="Texture" id=2]
@@ -13,6 +13,8 @@
 [ext_resource path="res://enemy/FSM/transitions/close_to_player/close_to_player.tscn" type="PackedScene" id=11]
 [ext_resource path="res://enemy/FSM/transitions/have_item/have_item.tscn" type="PackedScene" id=12]
 [ext_resource path="res://enemy/FSM/transitions/is_hit/is_hit.tscn" type="PackedScene" id=13]
+[ext_resource path="res://enemy/FSM/transitions/three_seconds_passed/three_seconds_passed.tscn" type="PackedScene" id=14]
+[ext_resource path="res://enemy/FSM/transitions/three_seconds_passed/three_seconds_passed.gd" type="Script" id=15]
 
 [sub_resource type="CircleShape2D" id=1]
 
@@ -117,7 +119,9 @@ GraphData = {
 "idle__": Vector2( 341.5, 170 ),
 "is_hit": Vector2( 169.5, 348 ),
 "is_hit_": Vector2( 169.5, 348 ),
-"is_hit__": Vector2( 169.5, 348 )
+"is_hit__": Vector2( 169.5, 348 ),
+"three_seconds_passed": Vector2( 534.5, 254 ),
+"three_seconds_passed_": Vector2( 534.5, 254 )
 }
 
 [node name="States" type="Node2D" parent="FSM2D"]
@@ -153,6 +157,13 @@ path2TargetState = NodePath("../../States/RUN_AWAY")
 
 path2SourceStates = [ NodePath(""), NodePath("../../States/idle"), NodePath("../../States/followingTarget"), NodePath("../../States/RUN_AWAY") ]
 path2TargetState = NodePath("../../States/ON_GROUND")
+
+[node name="three_seconds_passed" type="Node" parent="FSM2D/Transitions" instance=ExtResource( 14 )]
+
+script/script = ExtResource( 15 )
+path2SourceStates = [ NodePath(""), NodePath("../../States/followingTarget") ]
+path2TargetState = NodePath("../../States/idle")
+intervalBetweenChecks = -1.0
 
 [connection signal="area_enter" from="hit_area" to="." method="_on_hit_area_area_enter"]
 
