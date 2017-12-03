@@ -2,7 +2,7 @@ extends KinematicBody2D
 
 const speed = 250
 var mov = Vector2()
-onready var trolley = get_parent().get_node("Trolley")
+onready var trolley = system.trolley
 var item = null
 
 func _ready():
