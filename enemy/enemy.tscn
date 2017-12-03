@@ -98,6 +98,7 @@ GraphData = {
 "close_to_player": Vector2( 586.5, 344 ),
 "close_to_player_": Vector2( 586.5, 344 ),
 "close_to_player__": Vector2( 586.5, 344 ),
+"close_to_target": Vector2( 572.5, 348 ),
 "followingTarget": Vector2( 369.5, 348 ),
 "followingTarget_": Vector2( 369.5, 348 ),
 "followingTarget__": Vector2( 369.5, 348 ),
@@ -108,6 +109,7 @@ GraphData = {
 "found_close_promo__": Vector2( 379.5, 259.375 ),
 "found_close_target": Vector2( 370.5, 254 ),
 "found_close_target_": Vector2( 370.5, 254 ),
+"found_close_target__": Vector2( 370.5, 254 ),
 "have_item": Vector2( 569.5, 523 ),
 "have_item_": Vector2( 569.5, 523 ),
 "have_item__": Vector2( 569.5, 523 ),
@@ -121,7 +123,8 @@ GraphData = {
 "is_hit_": Vector2( 169.5, 348 ),
 "is_hit__": Vector2( 169.5, 348 ),
 "three_seconds_passed": Vector2( 534.5, 254 ),
-"three_seconds_passed_": Vector2( 534.5, 254 )
+"three_seconds_passed_": Vector2( 534.5, 254 ),
+"three_seconds_passed__": Vector2( 534.5, 254 )
 }
 
 [node name="States" type="Node2D" parent="FSM2D"]
@@ -143,7 +146,7 @@ GraphData = {
 path2SourceStates = [ NodePath(""), NodePath("../../States/idle") ]
 path2TargetState = NodePath("../../States/followingTarget")
 
-[node name="close_to_player" parent="FSM2D/Transitions" instance=ExtResource( 11 )]
+[node name="close_to_target" parent="FSM2D/Transitions" instance=ExtResource( 11 )]
 
 path2SourceStates = [ NodePath(""), NodePath("../../States/followingTarget") ]
 path2TargetState = NodePath("../../States/Attack")
