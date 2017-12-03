@@ -27,7 +27,6 @@ func enter(fromStateID=null, fromTransitionID=null, inArg0=null,inArg1=null, inA
 	var t = get_tree().get_nodes_in_group("target")
 	var s = getLogicRoot().Sorter.new(getLogicRoot().get_pos())
 	t.sort_custom(s, "sort_by_distance")
-	prints(t)
 	getLogicRoot().taget_list = t
 	
 
