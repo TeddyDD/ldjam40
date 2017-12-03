@@ -108,13 +108,14 @@ func _on_pushing_area_area_enter( area ):
 		set_process(true)
 
 func drop_item(other_fix):
-	var i = randi()%items.size()
-	var n = get_node("bucket").get_child(i)
-	var old_p = n.get_global_pos()
-	get_node("/root/game").reparent(n, get_node("/root/game/YSort"))
-	n.set_global_pos(old_p)
-	n.throw(other_fix*5)
-	items.remove(i)
+	if get_child_count() > 0:
+		var i = randi()%items.size()
+		var n = get_node("bucket").get_child(i)
+		var old_p = n.get_global_pos()
+		get_node("/root/game").reparent(n, get_node("/root/game/YSort"))
+		n.set_global_pos(old_p)
+		n.throw(other_fix*5)
+		items.remove(i)
 func _on_pushing_area_area_exit( area ):
 	if area.get_name() == "player_area":
 		player_in_area = false
