@@ -32,20 +32,26 @@ func transitionCondition(inDeltaTime, inParam0=null, inParam1=null, inParam2=nul
 	var tglst = getLogicRoot().taget_list
 	if tglst != []:
 		if tglst.size() > 1:
-			# ignore player without items
-			if tglst[i].get_name() == "player":
-				if tglst[i].item == null:
+			for t in tglst:
+				if t.is_in_group("item"):
+					break
+				if t.inventory.is_empty():
 					i += 1
-			# ignore empty trolley
-			if tglst[i].get_name() == "Trolley":
-				if tglst[i].items.size() == 0:
-					i += 1
-			# ignore promotion when there is no items left
-			if tglst[i].is_in_group("spawner"):
-				if tglst[i].item_ammount <= 0:
-					i += 1
-			if i >= tglst.size():
-				return false
+				else: break
+#			# ignore player without items
+#			if tglst[i].get_name() == "player":
+#				if tglst[i].inventory.is_empty():
+#					i += 1
+#			# ignore empty trolley
+#			if tglst[i].get_name() == "Trolley":
+#				if tglst[i].inventory.is_empty():
+#					i += 1
+#			# ignore promotion when there is no items left
+#			if tglst[i].is_in_group("spawner"):
+#				if tglst[i].inventory.is_empty():
+#					i += 1
+#			if i >= tglst.size():
+#				return false
 		if getLogicRoot().taget_list[i] != null:
 			getLogicRoot().target = getLogicRoot().taget_list[i]
 			return true
