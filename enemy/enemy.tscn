@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=1]
+[gd_scene load_steps=17 format=1]
 
 [ext_resource path="res://enemy/enemy.gd" type="Script" id=1]
 [ext_resource path="res://placeholders/placeholder.png" type="Texture" id=2]
@@ -14,7 +14,6 @@
 [ext_resource path="res://enemy/FSM/transitions/have_item/have_item.tscn" type="PackedScene" id=12]
 [ext_resource path="res://enemy/FSM/transitions/is_hit/is_hit.tscn" type="PackedScene" id=13]
 [ext_resource path="res://enemy/FSM/transitions/three_seconds_passed/three_seconds_passed.tscn" type="PackedScene" id=14]
-[ext_resource path="res://enemy/FSM/transitions/three_seconds_passed/three_seconds_passed.gd" type="Script" id=15]
 
 [sub_resource type="CircleShape2D" id=1]
 
@@ -31,7 +30,7 @@ height = 84.0
 
 input/pickable = false
 shapes/0/shape = SubResource( 1 )
-shapes/0/transform = Matrix32( 1, 0, 0, 1, 0, -12 )
+shapes/0/transform = Matrix32( 1, 0, 0, 1, 0, -1 )
 shapes/0/trigger = false
 collision/layers = 1
 collision/mask = 1
@@ -40,13 +39,14 @@ script/script = ExtResource( 1 )
 
 [node name="sprite" type="Sprite" parent="."]
 
-transform/pos = Vector2( 0, -58 )
+transform/pos = Vector2( 0, -47 )
 texture = ExtResource( 2 )
 region = true
 region_rect = Rect2( 78, 0, 42, 119 )
 
 [node name="hit_area" type="Area2D" parent="."]
 
+transform/pos = Vector2( 0, 11 )
 input/pickable = true
 shapes/0/shape = SubResource( 2 )
 shapes/0/transform = Matrix32( 1, 0, 0, 1, 0, -59 )
@@ -65,14 +65,14 @@ _update_shape_index = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 
-transform/pos = Vector2( 0, -12 )
+transform/pos = Vector2( 0, -1 )
 shape = SubResource( 1 )
 trigger = false
 _update_shape_index = 0
 
 [node name="FSM2D" type="Node2D" parent="."]
 
-editor/display_folded = true
+transform/pos = Vector2( 0, 11 )
 script/script = ExtResource( 3 )
 __meta__ = {
 "_editor_icon": ExtResource( 4 )
@@ -158,12 +158,10 @@ path2TargetState = NodePath("../../States/RUN_AWAY")
 path2SourceStates = [ NodePath(""), NodePath("../../States/idle"), NodePath("../../States/followingTarget"), NodePath("../../States/RUN_AWAY") ]
 path2TargetState = NodePath("../../States/ON_GROUND")
 
-[node name="three_seconds_passed" type="Node" parent="FSM2D/Transitions" instance=ExtResource( 14 )]
+[node name="three_seconds_passed" parent="FSM2D/Transitions" instance=ExtResource( 14 )]
 
-script/script = ExtResource( 15 )
 path2SourceStates = [ NodePath(""), NodePath("../../States/followingTarget") ]
 path2TargetState = NodePath("../../States/idle")
-intervalBetweenChecks = -1.0
 
 [connection signal="area_enter" from="hit_area" to="." method="_on_hit_area_area_enter"]
 

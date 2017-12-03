@@ -4,6 +4,8 @@ var target = null # node
 var taget_list = []
 var hit_by = null
 
+var path = null
+
 # class member variables go here, for example:
 # var a = 2
 # var b = "textvar"
@@ -12,6 +14,11 @@ func _ready():
 	# Called every time the node is added to the scene.
 	# Initialization here
 	pass
+	
+func _draw():
+	if path != null:
+		for p in path:
+			draw_circle(p-get_pos(), 12, Color(1,0,1))
 
 class Sorter:
 	var my_pos = Vector2()
