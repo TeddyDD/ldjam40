@@ -3,6 +3,7 @@ extends Sprite
 var weight = 10
 
 var player = null
+var trolley = null
 var vel = Vector2()
 func _ready():
 	set_fixed_process(true)
@@ -33,7 +34,7 @@ func _fixed_process(delta):
 			set_pos(get_pos()+vel.normalized()*d_*delta)
 			vel = Vector2()
 #			set_pos((get_pos() + vel * delta).snapped(Vector2(64, 64))/Vector2(64, 64))
-			flies = false
+			end_throw()
 
 func throw(direction, force=null):
 
@@ -45,12 +46,17 @@ func throw(direction, force=null):
 	if force:
 		force_ = force
 	vel = direction.normalized() * force_
-
+	
+func end_throw():
+	get_node("KinematicBody2D").add_collision_exception_with(trolley)
+	trolley.add_collision_exception_with(get_node("KinematicBody2D"))
+	flies = false
 func _on_damage_area_area_enter( area ):
 	if area.get_name() == "player_area":
 		if area extends PhysicsBody:
 			get_node("damage_area1").add_collision_exception_with(area)
 		player = area.get_parent()
+		trolley = player.trolley
 		get_node("KinematicBody2D").add_collision_exception_with(player)
 		player.add_collision_exception_with(get_node("KinematicBody2D"))
 	
@@ -58,6 +64,8 @@ func _on_damage_area_area_enter( area ):
 
 func _on_damage_area_area_exit( area ):
 	if area.get_name() == "player_area":
+		get_node("KinematicBody2D").add_collision_exception_with(trolley)
+		trolley.add_collision_exception_with(get_node("KinematicBody2D"))
 		player = null
 		if area extends PhysicsBody:
 			get_node("damage_area1").remove_collision_exception_with(area)
