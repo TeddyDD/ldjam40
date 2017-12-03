@@ -24,7 +24,7 @@ func _fixed_process(delta):
 			set_pos(Vector2(-0.858559,-25.1127))
 	if flies:
 		var nt_pos = ((get_pos() + vel * delta).snapped(Vector2(64, 64))/Vector2(64, 64))
-		var next_tile_id = get_node("/root/game/TileMap").get_cellv(nt_pos)
+		var next_tile_id = get_node("/root/game/Navigation2D/TileMap").get_cellv(nt_pos)
 #		if not ( next_tile_id in [1, 2] ):
 		if !get_node("KinematicBody2D").test_move(vel * delta):
 			#if set_pos(get_pos() + vel * delta)
