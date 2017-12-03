@@ -33,7 +33,4 @@ func _process(delta):
 		item = null
 	
 	move(mov * delta)
-	if is_colliding():
-		var n = get_collision_normal()
-		mov = n.slide(mov * delta)
-		move(mov)
+	system.slide_body(self, mov, delta)

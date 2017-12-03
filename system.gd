@@ -11,3 +11,9 @@ func reparent(from, to):
 	var temp = from
 	from.get_parent().remove_child(from)
 	to.add_child(temp)
+
+func slide_body(obj, mov, delta):
+	if obj.is_colliding():
+		var n = obj.get_collision_normal()
+		mov = n.slide(mov * delta)
+		obj.move(mov)
