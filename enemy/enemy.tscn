@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=1]
+[gd_scene load_steps=15 format=1]
 
 [ext_resource path="res://enemy/enemy.gd" type="Script" id=1]
 [ext_resource path="res://placeholders/placeholder.png" type="Texture" id=2]
@@ -9,11 +9,10 @@
 [ext_resource path="res://enemy/FSM/states/Attack/Attack.tscn" type="PackedScene" id=7]
 [ext_resource path="res://enemy/FSM/states/RUN_AWAY/RUN_AWAY.tscn" type="PackedScene" id=8]
 [ext_resource path="res://enemy/FSM/states/ON_GROUND/ON_GROUND.tscn" type="PackedScene" id=9]
-[ext_resource path="res://enemy/FSM/transitions/found_close_player/found_close_player.tscn" type="PackedScene" id=10]
-[ext_resource path="res://enemy/FSM/transitions/found_close_promo/found_close_promo.tscn" type="PackedScene" id=11]
-[ext_resource path="res://enemy/FSM/transitions/close_to_player/close_to_player.tscn" type="PackedScene" id=12]
-[ext_resource path="res://enemy/FSM/transitions/have_item/have_item.tscn" type="PackedScene" id=13]
-[ext_resource path="res://enemy/FSM/transitions/is_hit/is_hit.tscn" type="PackedScene" id=14]
+[ext_resource path="res://enemy/FSM/transitions/found_close_promo/found_close_promo.tscn" type="PackedScene" id=10]
+[ext_resource path="res://enemy/FSM/transitions/close_to_player/close_to_player.tscn" type="PackedScene" id=11]
+[ext_resource path="res://enemy/FSM/transitions/have_item/have_item.tscn" type="PackedScene" id=12]
+[ext_resource path="res://enemy/FSM/transitions/is_hit/is_hit.tscn" type="PackedScene" id=13]
 
 [sub_resource type="CircleShape2D" id=1]
 
@@ -62,28 +61,38 @@ updateMode = 1
 GraphData = {
 "Attack": Vector2( 570.5, 447 ),
 "Attack_": Vector2( 570.5, 447 ),
+"Attack__": Vector2( 570.5, 447 ),
 "ON_GROUND": Vector2( 103.5, 443 ),
 "ON_GROUND_": Vector2( 103.5, 443 ),
+"ON_GROUND__": Vector2( 103.5, 443 ),
 "RUN_AWAY": Vector2( 503.5, 617 ),
 "RUN_AWAY_": Vector2( 503.5, 617 ),
+"RUN_AWAY__": Vector2( 503.5, 617 ),
 "close_to_player": Vector2( 586.5, 344 ),
 "close_to_player_": Vector2( 586.5, 344 ),
+"close_to_player__": Vector2( 586.5, 344 ),
 "followingTarget": Vector2( 369.5, 348 ),
 "followingTarget_": Vector2( 369.5, 348 ),
-"found_close_player": Vector2( 541.5, 259.375 ),
-"found_close_player_": Vector2( 541.5, 259.375 ),
+"followingTarget__": Vector2( 369.5, 348 ),
+"found_close_player": Vector2( 605.5, 213 ),
+"found_close_player_": Vector2( 605.5, 213 ),
 "found_close_promo": Vector2( 379.5, 259.375 ),
 "found_close_promo_": Vector2( 379.5, 259.375 ),
+"found_close_promo__": Vector2( 379.5, 259.375 ),
+"found_close_target": Vector2( 370.5, 254 ),
+"found_close_target_": Vector2( 370.5, 254 ),
 "have_item": Vector2( 569.5, 523 ),
 "have_item_": Vector2( 569.5, 523 ),
+"have_item__": Vector2( 569.5, 523 ),
 "iddle": Vector2( 408.5, 166 ),
 "iddle_": Vector2( 408.5, 166 ),
 "iddle__": Vector2( 408.5, 166 ),
 "idle": Vector2( 341.5, 170 ),
 "idle_": Vector2( 341.5, 170 ),
-"idle__": Vector2( -8.5, 27 ),
+"idle__": Vector2( 341.5, 170 ),
 "is_hit": Vector2( 169.5, 348 ),
-"is_hit_": Vector2( 169.5, 348 )
+"is_hit_": Vector2( 169.5, 348 ),
+"is_hit__": Vector2( 169.5, 348 )
 }
 
 [node name="States" type="Node2D" parent="FSM2D"]
@@ -100,27 +109,22 @@ GraphData = {
 
 [node name="Transitions" type="Node2D" parent="FSM2D"]
 
-[node name="found_close_player" parent="FSM2D/Transitions" instance=ExtResource( 10 )]
+[node name="found_close_target" parent="FSM2D/Transitions" instance=ExtResource( 10 )]
 
 path2SourceStates = [ NodePath(""), NodePath("../../States/idle") ]
 path2TargetState = NodePath("../../States/followingTarget")
 
-[node name="found_close_promo" parent="FSM2D/Transitions" instance=ExtResource( 11 )]
-
-path2SourceStates = [ NodePath(""), NodePath("../../States/idle") ]
-path2TargetState = NodePath("../../States/followingTarget")
-
-[node name="close_to_player" parent="FSM2D/Transitions" instance=ExtResource( 12 )]
+[node name="close_to_player" parent="FSM2D/Transitions" instance=ExtResource( 11 )]
 
 path2SourceStates = [ NodePath(""), NodePath("../../States/followingTarget") ]
 path2TargetState = NodePath("../../States/Attack")
 
-[node name="have_item" parent="FSM2D/Transitions" instance=ExtResource( 13 )]
+[node name="have_item" parent="FSM2D/Transitions" instance=ExtResource( 12 )]
 
 path2SourceStates = [ NodePath(""), NodePath("../../States/Attack") ]
 path2TargetState = NodePath("../../States/RUN_AWAY")
 
-[node name="is_hit" parent="FSM2D/Transitions" instance=ExtResource( 14 )]
+[node name="is_hit" parent="FSM2D/Transitions" instance=ExtResource( 13 )]
 
 path2SourceStates = [ NodePath(""), NodePath("../../States/idle"), NodePath("../../States/followingTarget"), NodePath("../../States/RUN_AWAY") ]
 path2TargetState = NodePath("../../States/ON_GROUND")
