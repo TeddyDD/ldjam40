@@ -39,7 +39,7 @@ func _fixed_process(delta):
 			set_pos(get_pos() + vel * delta)# +Vector2(0, 32)
 		else:
 			var d_ = get_node("KinematicBody2D").move(vel * delta)
-			get_node("KinematicBody2D").move(-get_node("KinematicBody2D").get_travel())
+			get_node("KinematicBody2D").revert_motion()
 			set_pos(get_pos()+vel.normalized()*d_*delta)
 			vel = Vector2()
 #			set_pos((get_pos() + vel * delta).snapped(Vector2(64, 64))/Vector2(64, 64))

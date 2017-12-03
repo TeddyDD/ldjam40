@@ -23,6 +23,7 @@ func move_item_to(id, inventory):
 func drop_item(id=0):
 	var item = items[id]
 	var pos = item.get_global_pos() - item.get_pos()
+#	var pos = item.get_global_pos() - item.get_pos()
 	system.reparent(item, system.map_ysort)
 	item.set_global_pos(pos)
 	items.erase(item)

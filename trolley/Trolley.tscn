@@ -114,6 +114,7 @@ trigger = false
 [node name="inventory" parent="." instance=ExtResource( 3 )]
 
 transform/pos = Vector2( 1.29413, 16.8237 )
+capacity = -1
 
 [connection signal="area_enter" from="pushing_area" to="." method="_on_pushing_area_area_enter"]
 
