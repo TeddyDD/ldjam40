@@ -14,7 +14,7 @@ func _ready():
 	set_process(true)
 	
 func _process(delta):
-	get_node("debug").set_text(get_node("FSM2D").getState().get_name())
+	pass
 	
 func _draw():
 	if path != null:
