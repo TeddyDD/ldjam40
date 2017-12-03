@@ -7,8 +7,8 @@ var acc = 500
 var dcc = 0.08
 var player_in_area = false
 var player_is_connected = false
-onready var player = get_parent().get_node("player")
-var pl_pos
+onready var player = system.player
+var player_delta_pos
 var space_just_pressed = false
 var items = []
 var velocity = Vector2()
@@ -16,19 +16,18 @@ var velocity = Vector2()
 func _ready():
 	set_process_input(true)
 	set_process(true)
+
 var old_space = false
-var space_changed = false
 
 func _process(delta):
-	space_just_pressed = false
-	if space_key==false and old_space==true:
-		space_just_pressed = true
-	if space_just_pressed and player_in_area and not player.item:
+	
+	_input_space_key()
+	if space_just_pressed and\
+			player_in_area and\
+			not player.item:
 		if player_is_connected:
-			remove_collision_exception_with(player)
 			remove_player_collision()
 		else:
-			add_collision_exception_with(player)
 			add_player_collision()
 		player_is_connected = !player_is_connected
 	elif player.item != null and space_just_pressed and player_in_area:
@@ -44,7 +43,7 @@ func _process(delta):
 		weight += i.weight
 	
 	var mov = Vector2()
-	pl_pos = player.get_pos() - get_pos()
+	player_delta_pos = player.get_pos() - get_pos()
 	if player_is_connected:
 		var input_ = false
 		if Input.is_action_pressed("ui_up"):
@@ -100,7 +99,7 @@ func _process(delta):
 						drop_item(other_fix)
 		move(mov)
 	if player_is_connected:
-		player.set_pos(pl_pos + get_pos())
+		player.set_pos(player_delta_pos + get_pos())
 	old_space = space_key
 func _on_pushing_area_area_enter( area ):
 	if area.get_name() == "player_area":
@@ -122,15 +121,22 @@ func _on_pushing_area_area_exit( area ):
 
 func add_player_collision():
 	
+	add_collision_exception_with(player)
 	var shape = player.get_node("CollisionShape2D")
 	var c = get_shape_count()
 	add_shape(shape.get_shape(), Matrix32(0, player.get_pos()-get_pos()))
 
 func remove_player_collision():
 	
+	remove_collision_exception_with(player)
 	remove_shape(get_shape_count()-1)
 var space_key = false
 var prev = false
+func _input_space_key():
+	space_just_pressed = false
+	if space_key==false and old_space==true:
+		space_just_pressed = true
+
 func _input(event):
 
 	if event.type == InputEvent.KEY:
