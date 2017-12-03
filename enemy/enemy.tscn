@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=1]
+[gd_scene load_steps=18 format=1]
 
 [ext_resource path="res://enemy/enemy.gd" type="Script" id=1]
 [ext_resource path="res://placeholders/placeholder.png" type="Texture" id=2]
@@ -14,6 +14,7 @@
 [ext_resource path="res://enemy/FSM/transitions/have_item/have_item.tscn" type="PackedScene" id=12]
 [ext_resource path="res://enemy/FSM/transitions/is_hit/is_hit.tscn" type="PackedScene" id=13]
 [ext_resource path="res://enemy/FSM/transitions/three_seconds_passed/three_seconds_passed.tscn" type="PackedScene" id=14]
+[ext_resource path="res://inventory.tscn" type="PackedScene" id=15]
 
 [sub_resource type="CircleShape2D" id=1]
 
@@ -72,6 +73,7 @@ _update_shape_index = 0
 
 [node name="FSM2D" type="Node2D" parent="."]
 
+editor/display_folded = true
 transform/pos = Vector2( 0, 11 )
 script/script = ExtResource( 3 )
 __meta__ = {
@@ -99,6 +101,7 @@ GraphData = {
 "close_to_player_": Vector2( 586.5, 344 ),
 "close_to_player__": Vector2( 586.5, 344 ),
 "close_to_target": Vector2( 572.5, 348 ),
+"close_to_target_": Vector2( 572.5, 348 ),
 "followingTarget": Vector2( 369.5, 348 ),
 "followingTarget_": Vector2( 369.5, 348 ),
 "followingTarget__": Vector2( 369.5, 348 ),
@@ -165,6 +168,23 @@ path2TargetState = NodePath("../../States/ON_GROUND")
 
 path2SourceStates = [ NodePath(""), NodePath("../../States/followingTarget") ]
 path2TargetState = NodePath("../../States/idle")
+
+[node name="inventory" parent="." instance=ExtResource( 15 )]
+
+[node name="debug" type="Label" parent="."]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = -17.0
+margin/top = -144.0
+margin/right = 23.0
+margin/bottom = -130.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
 
 [connection signal="area_enter" from="hit_area" to="." method="_on_hit_area_area_enter"]
 
