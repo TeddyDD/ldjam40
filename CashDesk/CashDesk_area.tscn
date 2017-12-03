@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=1]
+[gd_scene load_steps=4 format=1]
 
 [ext_resource path="res://CashDesk/CashDesk_area.gd" type="Script" id=1]
+[ext_resource path="res://inventory.tscn" type="PackedScene" id=2]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 
@@ -26,6 +27,24 @@ polygon = Vector2Array( 0, 0, 64, 0, 64, 64, 0, 64 )
 shape_range = Vector2( 0, 0 )
 trigger = false
 
+[node name="inventory" parent="." instance=ExtResource( 2 )]
+
+transform/pos = Vector2( 64, 64 )
+capacity = -1
+x_rand = Vector2( 5, 15 )
+y_rand = Vector2( 15, -25 )
+
+[node name="Timer" type="Timer" parent="."]
+
+process_mode = 1
+wait_time = 2.0
+one_shot = false
+autostart = false
+
 [connection signal="area_enter" from="." to="." method="_on_CashDesk_area_area_enter"]
+
+[connection signal="area_exit" from="." to="." method="_on_CashDesk_area_area_exit"]
+
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
 
 
