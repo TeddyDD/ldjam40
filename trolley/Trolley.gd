@@ -1,6 +1,7 @@
 extends KinematicBody2D
 
 var weight = 1
+const WEIGHT_FACTOR = 2
 var max_speed = 500
 var acc = 500
 var dcc = 0.08
@@ -18,7 +19,6 @@ func _ready():
 	set_process(true)
 var old_space = false
 var space_changed = false
-
 
 func _process(delta):
 	space_just_pressed = false
@@ -42,9 +42,8 @@ func _process(delta):
 		p.x += (randi() % 20) - 10
 		i.set_pos(p)
 		get_node("bucket").add_child(i)
-		#speed = speed * 0.9
-		
-		
+		weight += i.weight
+	
 	var mov = Vector2()
 	pl_pos = player.get_pos() - get_pos()
 	if player_is_connected:
@@ -71,6 +70,8 @@ func _process(delta):
 			velocity = Vector2()
 		if velocity.length() - dcc >= 10:
 			velocity -= velocity * dcc/8
+	if velocity.length() - weight/WEIGHT_FACTOR > 0:
+		velocity = velocity.clamped(velocity.length() - weight/WEIGHT_FACTOR)
 	if player_is_connected:
 		if velocity.length() >= max_speed:
 			velocity.clamped(max_speed)
@@ -109,17 +110,6 @@ func _input(event):
 #	print("gsfddsa")
 	if event.type == InputEvent.KEY:
 		if event.is_action("ui_accept"):
-#			var cur = event.is_pressed()
-#			prints("%s - %s - %s" % [prev, space_key, cur])
-#			if prev==true and cur==false:
-#				space_key = true
-#				if space_key == true:
-#					assert(cur == false)
-#			else:
-#				space_key = false
-#			if space_key == true:
-#				assert(cur == false)
-#			prev = cur
 			if event.is_pressed():
 				space_key = true
 			else:
