@@ -15,6 +15,7 @@ func _ready():
 
 
 func _fixed_process(delta):
+	get_node("debug").set_text("flies: %s" % flies)
 	if player != null:
 		if Input.is_action_pressed("ui_accept") and player.item == null:
 			assert(player)
@@ -40,9 +41,10 @@ func _fixed_process(delta):
 			vel = vel.clamped(vel.length() - dcc)
 		else:
 			vel = Vector2()
+			end_throw()
 
 func throw(direction, force=null):
-
+	add_to_group("target", true)
 	var pos = get_global_pos()
 	flies = true
 	get_tree().get_root().get_node("game").reparent(self, get_node("/root/game/YSort"))

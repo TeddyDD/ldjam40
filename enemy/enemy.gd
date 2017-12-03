@@ -11,9 +11,10 @@ var path = null
 # var b = "textvar"
 
 func _ready():
-	# Called every time the node is added to the scene.
-	# Initialization here
-	pass
+	set_process(true)
+	
+func _process(delta):
+	get_node("debug").set_text(get_node("FSM2D").getState().get_name())
 	
 func _draw():
 	if path != null:
