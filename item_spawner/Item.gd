@@ -15,6 +15,7 @@ func _ready():
 
 
 func _fixed_process(delta):
+	get_node("debug").set_text("flies: %s" % flies)
 	if player != null:
 		if Input.is_action_pressed("ui_accept") and player.item == null:
 			assert(player)
