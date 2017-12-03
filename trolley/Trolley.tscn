@@ -28,7 +28,9 @@ points = Vector2Array( 25.092, 49.981, 24.0902, -28.3713, 37.5297, -28.3713, 37.
 custom_solver_bias = 0.0
 points = Vector2Array( 25.092, 49.981, 24.0902, -28.3713, 37.5297, -28.3713, 37.2662, 49.8942 )
 
-[node name="Trolley" type="KinematicBody2D"]
+[node name="Trolley" type="KinematicBody2D" groups=[
+"target",
+]]
 
 transform/pos = Vector2( -0.323532, -31.0592 )
 input/pickable = false

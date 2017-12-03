@@ -1,0 +1,158 @@
+[gd_scene load_steps=26 format=1]
+
+[ext_resource path="res://enemy/enemy.gd" type="Script" id=1]
+[ext_resource path="res://placeholders/placeholder.png" type="Texture" id=2]
+[ext_resource path="res://addons/net.kivano.fsm/content/fsm.gd" type="Script" id=3]
+[ext_resource path="res://addons/net.kivano.fsm/assets/ico2d.png" type="Texture" id=4]
+[ext_resource path="res://enemy/FSM/states/iddle/iddle.tscn" type="PackedScene" id=5]
+[ext_resource path="res://enemy/FSM/states/iddle/iddle.gd" type="Script" id=6]
+[ext_resource path="res://enemy/FSM/states/followingTarget/followingTarget.tscn" type="PackedScene" id=7]
+[ext_resource path="res://enemy/FSM/states/followingTarget/followingTarget.gd" type="Script" id=8]
+[ext_resource path="res://enemy/FSM/states/Attack/Attack.tscn" type="PackedScene" id=9]
+[ext_resource path="res://enemy/FSM/states/Attack/Attack.gd" type="Script" id=10]
+[ext_resource path="res://enemy/FSM/states/RUN_AWAY/RUN_AWAY.tscn" type="PackedScene" id=11]
+[ext_resource path="res://enemy/FSM/states/RUN_AWAY/RUN_AWAY.gd" type="Script" id=12]
+[ext_resource path="res://enemy/FSM/states/ON_GROUND/ON_GROUND.tscn" type="PackedScene" id=13]
+[ext_resource path="res://enemy/FSM/states/ON_GROUND/ON_GROUND.gd" type="Script" id=14]
+[ext_resource path="res://enemy/FSM/transitions/found_close_player/found_close_player.tscn" type="PackedScene" id=15]
+[ext_resource path="res://enemy/FSM/transitions/found_close_player/found_close_player.gd" type="Script" id=16]
+[ext_resource path="res://enemy/FSM/transitions/found_close_promo/found_close_promo.tscn" type="PackedScene" id=17]
+[ext_resource path="res://enemy/FSM/transitions/found_close_promo/found_close_promo.gd" type="Script" id=18]
+[ext_resource path="res://enemy/FSM/transitions/close_to_player/close_to_player.tscn" type="PackedScene" id=19]
+[ext_resource path="res://enemy/FSM/transitions/close_to_player/close_to_player.gd" type="Script" id=20]
+[ext_resource path="res://enemy/FSM/transitions/have_item/have_item.tscn" type="PackedScene" id=21]
+[ext_resource path="res://enemy/FSM/transitions/have_item/have_item.gd" type="Script" id=22]
+[ext_resource path="res://enemy/FSM/transitions/is_hit/is_hit.tscn" type="PackedScene" id=23]
+[ext_resource path="res://enemy/FSM/transitions/is_hit/is_hit.gd" type="Script" id=24]
+
+[sub_resource type="CircleShape2D" id=1]
+
+custom_solver_bias = 0.0
+radius = 11.6619
+
+[node name="enemy" type="KinematicBody2D"]
+
+input/pickable = false
+shapes/0/shape = SubResource( 1 )
+shapes/0/transform = Matrix32( 1, 0, 0, 1, 0, -12 )
+shapes/0/trigger = false
+collision/layers = 1
+collision/mask = 1
+collision/margin = 0.08
+script/script = ExtResource( 1 )
+
+[node name="sprite" type="Sprite" parent="."]
+
+transform/pos = Vector2( 0, -58 )
+texture = ExtResource( 2 )
+region = true
+region_rect = Rect2( 78, 0, 42, 119 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+
+transform/pos = Vector2( 0, -12 )
+shape = SubResource( 1 )
+trigger = false
+_update_shape_index = 0
+
+[node name="FSM2D" type="Node2D" parent="."]
+
+script/script = ExtResource( 3 )
+__meta__ = {
+"_editor_icon": ExtResource( 4 )
+}
+path2LogicRoot = NodePath("..")
+onlyActiveStateOnTheScene = true
+initManually = false
+updateMode = 1
+"Initial state:" = ""
+"Create new:/Subdirectory for FSM nodes:" = "FSM"
+"Create new:/Create state with name:" = null
+"Create new:/Create transition with name:" = null
+GraphData = {
+"Attack": Vector2( 570.5, 447 ),
+"Attack_": Vector2( 570.5, 447 ),
+"ON_GROUND": Vector2( 103.5, 443 ),
+"ON_GROUND_": Vector2( 103.5, 443 ),
+"RUN_AWAY": Vector2( 503.5, 617 ),
+"RUN_AWAY_": Vector2( 503.5, 617 ),
+"close_to_player": Vector2( 586.5, 344 ),
+"close_to_player_": Vector2( 586.5, 344 ),
+"followingTarget": Vector2( 369.5, 348 ),
+"followingTarget_": Vector2( 369.5, 348 ),
+"found_close_player": Vector2( 541.5, 259.375 ),
+"found_close_player_": Vector2( 541.5, 259.375 ),
+"found_close_promo": Vector2( 379.5, 259.375 ),
+"found_close_promo_": Vector2( 379.5, 259.375 ),
+"have_item": Vector2( 569.5, 523 ),
+"have_item_": Vector2( 569.5, 523 ),
+"iddle": Vector2( 408.5, 166 ),
+"iddle_": Vector2( 408.5, 166 ),
+"iddle__": Vector2( 408.5, 166 ),
+"idle": Vector2( 341.5, 170 ),
+"idle_": Vector2( 341.5, 170 ),
+"idle__": Vector2( -8.5, 27 ),
+"is_hit": Vector2( 169.5, 348 ),
+"is_hit_": Vector2( 169.5, 348 )
+}
+
+[node name="States" type="Node2D" parent="FSM2D"]
+
+[node name="idle" type="Node" parent="FSM2D/States" instance=ExtResource( 5 )]
+
+script/script = ExtResource( 6 )
+
+[node name="followingTarget" type="Node" parent="FSM2D/States" instance=ExtResource( 7 )]
+
+script/script = ExtResource( 8 )
+
+[node name="Attack" type="Node" parent="FSM2D/States" instance=ExtResource( 9 )]
+
+script/script = ExtResource( 10 )
+
+[node name="RUN_AWAY" type="Node" parent="FSM2D/States" instance=ExtResource( 11 )]
+
+script/script = ExtResource( 12 )
+
+[node name="ON_GROUND" type="Node" parent="FSM2D/States" instance=ExtResource( 13 )]
+
+script/script = ExtResource( 14 )
+
+[node name="Transitions" type="Node2D" parent="FSM2D"]
+
+[node name="found_close_player" type="Node" parent="FSM2D/Transitions" instance=ExtResource( 15 )]
+
+script/script = ExtResource( 16 )
+path2SourceStates = [ NodePath(""), NodePath("../../States/idle") ]
+path2TargetState = NodePath("../../States/followingTarget")
+intervalBetweenChecks = -1.0
+
+[node name="found_close_promo" type="Node" parent="FSM2D/Transitions" instance=ExtResource( 17 )]
+
+script/script = ExtResource( 18 )
+path2SourceStates = [ NodePath(""), NodePath("../../States/idle") ]
+path2TargetState = NodePath("../../States/followingTarget")
+intervalBetweenChecks = -1.0
+
+[node name="close_to_player" type="Node" parent="FSM2D/Transitions" instance=ExtResource( 19 )]
+
+script/script = ExtResource( 20 )
+path2SourceStates = [ NodePath(""), NodePath("../../States/followingTarget") ]
+path2TargetState = NodePath("../../States/Attack")
+intervalBetweenChecks = -1.0
+
+[node name="have_item" type="Node" parent="FSM2D/Transitions" instance=ExtResource( 21 )]
+
+script/script = ExtResource( 22 )
+path2SourceStates = [ NodePath(""), NodePath("../../States/Attack") ]
+path2TargetState = NodePath("../../States/RUN_AWAY")
+intervalBetweenChecks = -1.0
+
+[node name="is_hit" type="Node" parent="FSM2D/Transitions" instance=ExtResource( 23 )]
+
+script/script = ExtResource( 24 )
+path2SourceStates = [ NodePath(""), NodePath("../../States/idle"), NodePath("../../States/followingTarget"), NodePath("../../States/RUN_AWAY") ]
+path2TargetState = NodePath("../../States/ON_GROUND")
+intervalBetweenChecks = -1.0
+
+

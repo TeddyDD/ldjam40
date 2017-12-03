@@ -13,7 +13,9 @@ radius = 14.4069
 custom_solver_bias = 0.0
 radius = 13.4763
 
-[node name="player" type="KinematicBody2D"]
+[node name="player" type="KinematicBody2D" groups=[
+"target",
+]]
 
 input/pickable = false
 shapes/0/shape = SubResource( 1 )

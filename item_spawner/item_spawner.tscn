@@ -8,7 +8,9 @@
 custom_solver_bias = 0.0
 extents = Vector2( 55.9664, 60.6499 )
 
-[node name="item_spawner" type="Sprite"]
+[node name="item_spawner" type="Sprite" groups=[
+"target",
+]]
 
 texture = ExtResource( 1 )
 centered = false
