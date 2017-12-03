@@ -10,6 +10,7 @@ extents = Vector2( 55.9664, 60.6499 )
 
 [node name="item_spawner" type="Sprite" groups=[
 "target",
+"spawner",
 ]]
 
 texture = ExtResource( 1 )

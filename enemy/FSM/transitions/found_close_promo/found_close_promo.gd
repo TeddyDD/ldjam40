@@ -28,5 +28,7 @@ func prepare(inNewStateID):
 	pass
 
 func transitionCondition(inDeltaTime, inParam0=null, inParam1=null, inParam2=null, inParam3=null, inParam4=null): 
-	#YOU MUST IMPLEMENT TRANSITION CONDITION CHECK HERE: Return true/false
-	return false;
+	if getLogicRoot().taget_list[0].is_in_group("spawner"):
+		getLogicRoot().target = getLogicRoot().taget_list[0]
+		return true
+	return false

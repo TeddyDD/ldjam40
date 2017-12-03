@@ -1,29 +1,19 @@
-[gd_scene load_steps=26 format=1]
+[gd_scene load_steps=16 format=1]
 
 [ext_resource path="res://enemy/enemy.gd" type="Script" id=1]
 [ext_resource path="res://placeholders/placeholder.png" type="Texture" id=2]
 [ext_resource path="res://addons/net.kivano.fsm/content/fsm.gd" type="Script" id=3]
 [ext_resource path="res://addons/net.kivano.fsm/assets/ico2d.png" type="Texture" id=4]
 [ext_resource path="res://enemy/FSM/states/iddle/iddle.tscn" type="PackedScene" id=5]
-[ext_resource path="res://enemy/FSM/states/iddle/iddle.gd" type="Script" id=6]
-[ext_resource path="res://enemy/FSM/states/followingTarget/followingTarget.tscn" type="PackedScene" id=7]
-[ext_resource path="res://enemy/FSM/states/followingTarget/followingTarget.gd" type="Script" id=8]
-[ext_resource path="res://enemy/FSM/states/Attack/Attack.tscn" type="PackedScene" id=9]
-[ext_resource path="res://enemy/FSM/states/Attack/Attack.gd" type="Script" id=10]
-[ext_resource path="res://enemy/FSM/states/RUN_AWAY/RUN_AWAY.tscn" type="PackedScene" id=11]
-[ext_resource path="res://enemy/FSM/states/RUN_AWAY/RUN_AWAY.gd" type="Script" id=12]
-[ext_resource path="res://enemy/FSM/states/ON_GROUND/ON_GROUND.tscn" type="PackedScene" id=13]
-[ext_resource path="res://enemy/FSM/states/ON_GROUND/ON_GROUND.gd" type="Script" id=14]
-[ext_resource path="res://enemy/FSM/transitions/found_close_player/found_close_player.tscn" type="PackedScene" id=15]
-[ext_resource path="res://enemy/FSM/transitions/found_close_player/found_close_player.gd" type="Script" id=16]
-[ext_resource path="res://enemy/FSM/transitions/found_close_promo/found_close_promo.tscn" type="PackedScene" id=17]
-[ext_resource path="res://enemy/FSM/transitions/found_close_promo/found_close_promo.gd" type="Script" id=18]
-[ext_resource path="res://enemy/FSM/transitions/close_to_player/close_to_player.tscn" type="PackedScene" id=19]
-[ext_resource path="res://enemy/FSM/transitions/close_to_player/close_to_player.gd" type="Script" id=20]
-[ext_resource path="res://enemy/FSM/transitions/have_item/have_item.tscn" type="PackedScene" id=21]
-[ext_resource path="res://enemy/FSM/transitions/have_item/have_item.gd" type="Script" id=22]
-[ext_resource path="res://enemy/FSM/transitions/is_hit/is_hit.tscn" type="PackedScene" id=23]
-[ext_resource path="res://enemy/FSM/transitions/is_hit/is_hit.gd" type="Script" id=24]
+[ext_resource path="res://enemy/FSM/states/followingTarget/followingTarget.tscn" type="PackedScene" id=6]
+[ext_resource path="res://enemy/FSM/states/Attack/Attack.tscn" type="PackedScene" id=7]
+[ext_resource path="res://enemy/FSM/states/RUN_AWAY/RUN_AWAY.tscn" type="PackedScene" id=8]
+[ext_resource path="res://enemy/FSM/states/ON_GROUND/ON_GROUND.tscn" type="PackedScene" id=9]
+[ext_resource path="res://enemy/FSM/transitions/found_close_player/found_close_player.tscn" type="PackedScene" id=10]
+[ext_resource path="res://enemy/FSM/transitions/found_close_promo/found_close_promo.tscn" type="PackedScene" id=11]
+[ext_resource path="res://enemy/FSM/transitions/close_to_player/close_to_player.tscn" type="PackedScene" id=12]
+[ext_resource path="res://enemy/FSM/transitions/have_item/have_item.tscn" type="PackedScene" id=13]
+[ext_resource path="res://enemy/FSM/transitions/is_hit/is_hit.tscn" type="PackedScene" id=14]
 
 [sub_resource type="CircleShape2D" id=1]
 
@@ -98,61 +88,41 @@ GraphData = {
 
 [node name="States" type="Node2D" parent="FSM2D"]
 
-[node name="idle" type="Node" parent="FSM2D/States" instance=ExtResource( 5 )]
+[node name="idle" parent="FSM2D/States" instance=ExtResource( 5 )]
 
-script/script = ExtResource( 6 )
+[node name="followingTarget" parent="FSM2D/States" instance=ExtResource( 6 )]
 
-[node name="followingTarget" type="Node" parent="FSM2D/States" instance=ExtResource( 7 )]
+[node name="Attack" parent="FSM2D/States" instance=ExtResource( 7 )]
 
-script/script = ExtResource( 8 )
+[node name="RUN_AWAY" parent="FSM2D/States" instance=ExtResource( 8 )]
 
-[node name="Attack" type="Node" parent="FSM2D/States" instance=ExtResource( 9 )]
-
-script/script = ExtResource( 10 )
-
-[node name="RUN_AWAY" type="Node" parent="FSM2D/States" instance=ExtResource( 11 )]
-
-script/script = ExtResource( 12 )
-
-[node name="ON_GROUND" type="Node" parent="FSM2D/States" instance=ExtResource( 13 )]
-
-script/script = ExtResource( 14 )
+[node name="ON_GROUND" parent="FSM2D/States" instance=ExtResource( 9 )]
 
 [node name="Transitions" type="Node2D" parent="FSM2D"]
 
-[node name="found_close_player" type="Node" parent="FSM2D/Transitions" instance=ExtResource( 15 )]
+[node name="found_close_player" parent="FSM2D/Transitions" instance=ExtResource( 10 )]
 
-script/script = ExtResource( 16 )
 path2SourceStates = [ NodePath(""), NodePath("../../States/idle") ]
 path2TargetState = NodePath("../../States/followingTarget")
-intervalBetweenChecks = -1.0
 
-[node name="found_close_promo" type="Node" parent="FSM2D/Transitions" instance=ExtResource( 17 )]
+[node name="found_close_promo" parent="FSM2D/Transitions" instance=ExtResource( 11 )]
 
-script/script = ExtResource( 18 )
 path2SourceStates = [ NodePath(""), NodePath("../../States/idle") ]
 path2TargetState = NodePath("../../States/followingTarget")
-intervalBetweenChecks = -1.0
 
-[node name="close_to_player" type="Node" parent="FSM2D/Transitions" instance=ExtResource( 19 )]
+[node name="close_to_player" parent="FSM2D/Transitions" instance=ExtResource( 12 )]
 
-script/script = ExtResource( 20 )
 path2SourceStates = [ NodePath(""), NodePath("../../States/followingTarget") ]
 path2TargetState = NodePath("../../States/Attack")
-intervalBetweenChecks = -1.0
 
-[node name="have_item" type="Node" parent="FSM2D/Transitions" instance=ExtResource( 21 )]
+[node name="have_item" parent="FSM2D/Transitions" instance=ExtResource( 13 )]
 
-script/script = ExtResource( 22 )
 path2SourceStates = [ NodePath(""), NodePath("../../States/Attack") ]
 path2TargetState = NodePath("../../States/RUN_AWAY")
-intervalBetweenChecks = -1.0
 
-[node name="is_hit" type="Node" parent="FSM2D/Transitions" instance=ExtResource( 23 )]
+[node name="is_hit" parent="FSM2D/Transitions" instance=ExtResource( 14 )]
 
-script/script = ExtResource( 24 )
 path2SourceStates = [ NodePath(""), NodePath("../../States/idle"), NodePath("../../States/followingTarget"), NodePath("../../States/RUN_AWAY") ]
 path2TargetState = NodePath("../../States/ON_GROUND")
-intervalBetweenChecks = -1.0
 
 
