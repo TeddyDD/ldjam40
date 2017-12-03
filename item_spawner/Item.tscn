@@ -20,7 +20,7 @@ points = Vector2Array( -13.6147, -21.1179, 6.34672, -22.4057, 11.9273, -17.6837,
 transform/pos = Vector2( -0.858559, -25.1127 )
 texture = ExtResource( 1 )
 region = true
-region_rect = Rect2( 184, 146, 31, 50 )
+region_rect = Rect2( 188, 147, 31, 50 )
 script/script = ExtResource( 2 )
 
 [node name="damage_area" type="Area2D" parent="." groups=[
