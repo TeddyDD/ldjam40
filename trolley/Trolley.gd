@@ -82,10 +82,8 @@ func _process(delta):
 		if coll:
 			if coll extends TileMap:
 				var c_pos = get_collision_pos()
-#				var c_mov = move(mov)
 				var c_mov = motion_left
 				revert_motion()
-#				move(-get_travel())
 				var pos__ = Vector2(round((c_pos+c_mov).x/64),
 						round((c_pos+c_mov).y/64))
 				var fix = Vector2()
@@ -96,8 +94,11 @@ func _process(delta):
 				var id_of_tile = coll.get_cellv(pos__ + fix)
 				var name_of_tile = coll.get_tileset().tile_get_name(id_of_tile)
 				if name_of_tile in ["wall", "shelf"]:
-					if motion_left.length() > DROP_ITEM_SPEED and not inventory.is_empty():
-						drop_item(motion_left)
+					if motion_left.length() > DROP_ITEM_SPEED:
+						if not inventory.is_empty():
+							drop_item(motion_left)
+						if name_of_tile == "shelf":
+							system.tilemap.drop_from_shelf(Vector2(pos__+fix), motion_left)
 		move(mov)
 	if player_is_connected:
 		player.set_pos(player_delta_pos + get_pos())
@@ -108,27 +109,17 @@ func _on_pushing_area_area_enter( area ):
 		set_process(true)
 
 func drop_item(motion_left):
-	prints("DROOOP")
 	if not inventory.is_empty():
 		var i = randi() % inventory.items.size()
 		var item = inventory.items[i]
 		item.activate()
 		inventory.drop_item(i)
 		item.throw(motion_left)
-#	if get_child_count() > 0:
-#		var i = randi()%items.size()
-#		var n = get_node("bucket").get_child(i)
-#		var old_p = n.get_global_pos()
-#		system.reparent(n, get_node("/root/game/YSort"))
-#		n.set_global_pos(old_p)
-#		n.throw(motion_left*5)
-#		items.remove(i)
-#		
-		
-		
+
 func _on_pushing_area_area_exit( area ):
 	if area.get_name() == "player_area":
 		player_in_area = false
+		remove_collision_exception_with(player)
 
 func add_player_collision():
 	
@@ -149,7 +140,7 @@ func _input_space_key():
 		space_just_pressed = true
 
 func _input(event):
-
+	
 	if event.type == InputEvent.KEY:
 		if event.is_action("ui_accept"):
 			if event.is_pressed():
