@@ -1,6 +1,10 @@
 extends Node2D
 
 export var capacity = 1 # -1 = infinity
+export (Vector2) var x_rand = Vector2(0,5) #from - to
+export (Vector2) var y_rand = Vector2(20,10) #from - to
+#	p.y -= (items.size() + int(x_rand.x) + randi() % int(x_rand.y))
+#	p.x += (randi() % int(y_rand.x)) - int(y_rand.y)
 var items = []
 
 func is_full():
@@ -41,6 +45,6 @@ func add_item(item):
 	
 func set_rand_pos(item):
 	var p = item.get_pos()
-	p.y -= (items.size() + randi() % 5)
-	p.x += (randi() % 20) - 10
+	p.y -= (items.size() + int(x_rand.x) + randi() % int(x_rand.y))
+	p.x += (randi() % int(y_rand.x)) - int(y_rand.y)
 	item.set_pos(p)

@@ -80,5 +80,7 @@ _update_shape_index = 0
 [node name="inventory" parent="." instance=ExtResource( 3 )]
 
 transform/pos = Vector2( 1.62109, -27.5584 )
+x_rand = Vector2( 0, 5 )
+y_rand = Vector2( 20, 10 )
 
 

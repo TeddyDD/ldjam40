@@ -115,6 +115,8 @@ trigger = false
 
 transform/pos = Vector2( 1.29413, 16.8237 )
 capacity = -1
+x_rand = Vector2( 0, 5 )
+y_rand = Vector2( 20, 10 )
 
 [connection signal="area_enter" from="pushing_area" to="." method="_on_pushing_area_area_enter"]
 
