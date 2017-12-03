@@ -4,8 +4,10 @@ const speed = 250
 var mov = Vector2()
 onready var trolley = system.trolley
 var item = null
+var inventory
 
 func _ready():
+	inventory = get_node("inventory")
 	set_process(true)
 	
 func _process(delta):
