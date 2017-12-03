@@ -7,3 +7,7 @@ onready var map_ysort = get_node("/root/game/YSort")
 onready var trolley = get_node("/root/game/YSort/Trolley")
 onready var player = get_node("/root/game/YSort/player")
 
+func reparent(from, to):
+	var temp = from
+	from.get_parent().remove_child(from)
+	to.add_child(temp)

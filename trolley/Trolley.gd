@@ -112,7 +112,7 @@ func drop_item(other_fix):
 		var i = randi()%items.size()
 		var n = get_node("bucket").get_child(i)
 		var old_p = n.get_global_pos()
-		get_node("/root/game").reparent(n, get_node("/root/game/YSort"))
+		system.reparent(n, get_node("/root/game/YSort"))
 		n.set_global_pos(old_p)
 		n.throw(other_fix*5)
 		items.remove(i)

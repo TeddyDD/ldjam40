@@ -20,7 +20,7 @@ func _fixed_process(delta):
 		if Input.is_action_pressed("ui_accept") and player.item == null:
 			assert(player)
 			player.item = self
-			get_tree().get_root().get_node("game").reparent(self, player)
+			system.reparent(self, player)
 			# fix that horrible hack
 			set_pos(Vector2(-0.858559,-25.1127))
 	if flies:
@@ -47,7 +47,7 @@ func throw(direction, force=null):
 	add_to_group("target", true)
 	var pos = get_global_pos()
 	flies = true
-	get_tree().get_root().get_node("game").reparent(self, get_node("/root/game/YSort"))
+	system.reparent(self, get_node("/root/game/YSort"))
 	set_global_pos(pos)
 	var force_ = 1000
 	if force:
