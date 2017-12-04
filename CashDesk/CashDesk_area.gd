@@ -1,11 +1,10 @@
-extends Area2D
+extends Node2D
 
 var inventory
 
 func _ready():
 	
 	inventory = get_node("inventory")
-
 
 func _on_CashDesk_area_area_enter( area ):
 	

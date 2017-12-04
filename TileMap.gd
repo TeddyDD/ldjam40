@@ -5,13 +5,15 @@ extends TileMap
 # var b = "textvar"
 var cash_desc = preload("res://CashDesk/CashDesk_area.tscn")
 func _ready():
-	var r = get_used_rect()
-	for c in get_used_cells():
-		var i = get_cellv(c)
-		if i == 5:
-			var cd = cash_desc.instance()
-			add_child(cd)
-			cd.set_pos(Vector2(c.x-1, c.y)*Vector2(64, 64))
+	pass
+#	var r = get_used_rect()
+#	for c in get_used_cells():
+#		var i = get_cellv(c)
+#		if i == 5:
+#			var cd = cash_desc.instance()
+#			add_child(cd)
+#			cd.set_global_pos(Vector2(0,0))
+#			cd.set_global_pos(Vector2(c.x-1, c.y)*Vector2(64, 64))
 
 func drop_from_shelf(v, dir):
 	set_cellv(v, 3)

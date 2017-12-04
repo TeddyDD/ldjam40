@@ -30,8 +30,8 @@ class Sorter:
 	func _init(pos):
 		self.my_pos = pos
 	func sort_by_distance(a,b):
-		return a.get_pos().distance_squared_to(self.my_pos) < \
-		b.get_pos().distance_squared_to(self.my_pos)
+		return a.get_global_pos().distance_squared_to(self.my_pos) < \
+		b.get_global_pos().distance_squared_to(self.my_pos)
 		
 
 func _on_hit_area_area_enter( area ):
@@ -55,6 +55,7 @@ func exit_state(i):
 		call("exit_state"+str(i))
 func process_state(i, delta):
 	state_time += delta
+	print("process_state"+str(i))
 	if has_method("process_state"+str(i)):
 		call("process_state"+str(i), delta)
 func change_state_to(i):
@@ -64,7 +65,7 @@ func change_state_to(i):
 
 func enter_state0(): # IDLE
 	var t = get_tree().get_nodes_in_group("target")
-	var s = Sorter.new(get_pos())
+	var s = Sorter.new(get_global_pos())
 	t.sort_custom(s, "sort_by_distance")
 	taget_list = t
 func process_state0(d):
@@ -80,7 +81,8 @@ var FOLLOWING_TARGET_nav
 var FOLLOWING_TARGET_min_distance = 50
 var FOLLOWING_TARGET_speed = 200
 
-func enter_state1():
+func enter_state1(): # FOLLOWING_TARGET
+	print("TARGET KURWA: ", target.get_name())
 	FOLLOWING_TARGET_taget_pos = target.get_global_pos()
 	FOLLOWING_TARGET_path = Array(system.nav.get_simple_path(get_global_pos(),FOLLOWING_TARGET_taget_pos, false))
 #	path.invert()
@@ -88,13 +90,20 @@ func enter_state1():
 	for i in range(0, FOLLOWING_TARGET_path.size()):
 		FOLLOWING_TARGET_path[i] += Vector2(32,32)
 func process_state1(d):
+	print("PROCESUJEMY TARGET KURWA: ", target.get_name())
 	var mov = FOLLOWING_TARGET_path[FOLLOWING_TARGET_current_point] - get_global_pos()
-	mov = mov.normalized() * FOLLOWING_TARGET_speed
+	var old = get_global_pos()
+	move_to(FOLLOWING_TARGET_path[0])
+	var new = get_global_pos()
+	revert_motion()
+	mov = (new - old).normalized() * FOLLOWING_TARGET_speed
+	print ("TRUE MOV GHERAR, ", mov)
+#	mov = mov.normalized() * FOLLOWING_TARGET_speed
 	move(mov * d)
 	if is_colliding():
 		var n = get_collision_normal()
 		mov = n.slide(mov * d)
-		move(mov)
+		move(mov*d)
 	if get_global_pos().distance_to(FOLLOWING_TARGET_path[FOLLOWING_TARGET_current_point]) < FOLLOWING_TARGET_min_distance:
 		if FOLLOWING_TARGET_path.size() > 1:
 			FOLLOWING_TARGET_path.pop_front()
@@ -104,18 +113,32 @@ func process_state1(d):
 		change_state_to(STATE.ON_GROUND)
 	if cond_3s_passed():
 		change_state_to(STATE.FOLLOWING_TARGET)
-	if close_to:
-		print("CLOSE ", close_to)
-		if cond_fund_close_target():
-			change_state_to(STATE.ATTACK)
+#	if close_to:
+	print(target)
+	print(target)
+	print(target)
+	print(target)
+	print(target)
+	print(target)
+	print("CLOSE ", close_to)
+	if target != null and target.is_in_group("exit"):
+		return
+	if close_to != null and cond_fund_close_target()\
+			and cond_no_have_item():
+		print("changed again")
+		change_state_to(STATE.ATTACK)
 
-func enter_state4():
+func enter_state4(): # ATTACK
 	if close_to.is_in_group("item"):
 		inventory.pick_up(close_to)
 	elif close_to.is_in_group("spawner"):
 		if not close_to.inventory.is_empty():
 			close_to.inventory.move_item_to(0, inventory)
-
+	target = get_tree().get_nodes_in_group("exit")[0]
+	change_state_to(STATE.FOLLOWING_TARGET)
+func process_state4(d):
+	target = get_tree().get_nodes_in_group("exit")[0]
+	change_state_to(STATE.FOLLOWING_TARGET)
 func cond_fund_close_target():
 	var i = 0
 	var tglst = taget_list
