@@ -1,6 +1,7 @@
 tool
 extends Node
 ##################################### README  ###############################
+# @author: Jakub Grzesik
 #
 # * To create new state check  "Create New:" subsection in FSM inspector
 #
@@ -61,8 +62,13 @@ extends Node
 #    STATE: you can use this dictionary to access state id. Using is is recommended because it's less error prone than
 #        entering states ids by hand. ex. fsm.changeStateTo(fsm.STATE.START) <- when one of your states is named 'START')
 
-#
+##################################################################################
+#########                     Imported classes/scenes                    #########
+##################################################################################
 var StateScn = preload("res://addons/net.kivano.fsm/content/FSMState.gd");
+var FSMDebuggerScn = preload("res://addons/net.kivano.fsm/content/FSMDebugger/FSMDebugger.tscn");
+var FSMSpatialDebuggerScn = preload("res://addons/net.kivano.fsm/content/FSMDebugger/FSMDebugger3D.tscn");
+
 ##################################################################################
 #########                       Signals definitions                      #########
 ##################################################################################
@@ -91,6 +97,7 @@ export (NodePath) var path2LogicRoot = NodePath("..");
 export (bool) var onlyActiveStateOnTheScene = false setget setOnlyActiveStateOnScene;
 export (bool) var initManually = false;
 export (int, "Manual", "Process", "Fixed") var updateMode = UPDATE_MODE_PROCESS;
+export (bool) var enableDebug = false;
 
 var stateTransitionsMap = {};
 
@@ -110,6 +117,7 @@ var lastlyUsedTransitionID = null;
 ##################################################################################
 func _ready():
 	toolInit();
+	add_to_group("FSM");
 	if(initManually):
 		return;
 	init();
@@ -126,7 +134,16 @@ func init(inStatesParam1=null, inStatesParam2=null, inStatesParam3=null, inState
 	#
 	if(get_tree().is_editor_hint()): return;
 	if(get_child_count()==0): return;
-
+	
+	if(enableDebug):
+		var debugger;
+		if(get_parent() extends Spatial):
+			debugger = FSMSpatialDebuggerScn.instance();
+		else:
+			debugger = FSMDebuggerScn.instance();
+		add_child(debugger);
+		debugger.manualInit(self);
+	
 	#
 	ensureInitStateIdIsSet();
 
@@ -183,6 +200,9 @@ func initUpdateMode():
 
 func initTransitions(inParam1, inParam2, inParam3, inParam4, inParam5):
 	TRANSITION = {};#to be sure
+	for state in statesNode.get_children(): #ensure even states without transitions are here
+		stateTransitionsMap[state.get_name()] = [];
+
 	var transitions = transitionsNode.get_children()
 	for transition in transitions:
 		TRANSITION[transition.get_name()] = transition.get_name();
@@ -260,14 +280,14 @@ func setState(inStateID, inArg0=null,inArg1=null, inArg2=null):
 		#transitions
 		var transitions = transitionsNode.get_children();
 		for transition in transitions: transitionsNode.remove_child(transition);
-		ensureTransitionsForStateIDAreReady(inStateID);
-
+	
 	#
-	currentState = states[inStateID];
-	currentState.enter(prevStateID, lastlyUsedTransitionID, inArg0, inArg1, inArg2);
-	currentStateID = currentState.get_name()
 	stateTime = 0.0;
-
+	currentState = states[inStateID];
+	currentStateID = currentState.get_name()
+	ensureTransitionsForStateIDAreReady(inStateID);
+	currentState.enter(prevStateID, lastlyUsedTransitionID, inArg0, inArg1, inArg2);
+	
 	#
 	emit_signal("stateChanged", currentStateID, prevStateID);
 
@@ -297,6 +317,9 @@ func getLastlyUsedTransition():
 
 func lastlyUsedTransitionID():
 	return lastlyUsedTransitionID;
+
+func getActiveTransitions():
+	return stateTransitionsMap[currentStateID];
 
 ### less often used below
 ######
@@ -337,6 +360,7 @@ func archiveStateInHistory(inState2Archive):
 	statesHistory.push_front(inState2Archive)
 
 func getPrevStateFromHistory(inHowFar=0): #0 means prev
+	if(statesHistory.size()<=inHowFar): return null;
 	var historicState = statesHistory[inHowFar];
 	return historicState;
 

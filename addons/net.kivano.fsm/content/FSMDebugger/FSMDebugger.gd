@@ -1,7 +1,6 @@
-tool
-extends Control
+extends Node2D
 ################################### R E A D M E ##################################
-#
+# 
 #
 #
 
@@ -12,60 +11,31 @@ extends Control
 ##################################################################################
 #########                       Signals definitions                      #########
 ##################################################################################
-signal stateCreateRequest(inStateName);
-signal transitionCreateRequest(inTransitionName, inCreateNewScriptAutomatically);
 
 ##################################################################################
 #####  Variables (Constants, Export Variables, Node Vars, Normal variables)  #####
 ######################### var myvar setget myvar_set,myvar_get ###################
-const OPENED_4_STATE = 1;
-const OPENED_4_TRANSITION = 2;
+onready var stateText = get_node("StateText");
+onready var prevTransText = get_node("PrevTransition");
 
-onready var animator = get_node("AnimationPlayer");
-onready var title = get_node("title");
-onready var conditionLabel = get_node("conditionLabel");
-onready var elementName = get_node("elementName");
-var conditionOptions;
-var opened4;
+var fsm2Debug;
 
 ##################################################################################
 #########                          Init code                             #########
 ##################################################################################
-
 func _notification(what):
 	if (what == NOTIFICATION_INSTANCED):
-		conditionOptions = get_node("conditionOptions");
-		conditionOptions.clear()
-		conditionOptions.add_item("New condition", 0);
-		conditionOptions.add_item("Choose existing",1);
 		pass #all internal initialization
 	elif(what == NOTIFICATION_READY):
-		hide();
+		pass #only parts that are dependent on outside world (on theparents etc/also called when reparented) 
 
+func manualInit(inFsm2Debug):
+	fsm2Debug = inFsm2Debug;
+	set_process(true);
 
 ##################################################################################
 #########                       Getters and Setters                      #########
 ##################################################################################
-func appear4StateAtPos(inGlobalAppearPos):
-	opened4 = OPENED_4_STATE;
-	conditionOptions.hide();
-	conditionLabel.hide();
-
-	title.set_text("CREATE NEW STATE");
-	set_global_pos(inGlobalAppearPos);
-	animator.play("fadein");
-	show();
-
-func appear4TransitionAtPos(inGlobalAppearPos):
-	opened4 = OPENED_4_TRANSITION;
-	conditionOptions.show();
-	conditionLabel.show();
-
-	title.set_text("CREATE NEW TRANSITION");
-	set_global_pos(inGlobalAppearPos);
-	animator.play("fadein");
-	show();
-
 
 ##################################################################################
 #########              Should be implemented in inheritanced             #########
@@ -74,18 +44,13 @@ func appear4TransitionAtPos(inGlobalAppearPos):
 ##################################################################################
 #########                    Implemented from ancestor                   #########
 ##################################################################################
-
+func _process(delta):
+	stateText.set_text(fsm2Debug.getStateID());
+	if(fsm2Debug.lastlyUsedTransitionID!=null):
+		prevTransText.set_text(fsm2Debug.lastlyUsedTransitionID);
 ##################################################################################
 #########                       Connected Signals                        #########
 ##################################################################################
-func _on_btnCancel_pressed():
-	animator.play("fadeout");
-
-func _on_btnCreate_pressed():
-	_create_state_or_transition(elementName.get_text())
-
-func _on_elementName_text_entered(text):
-	_create_state_or_transition(text)
 
 ##################################################################################
 #########     Methods fired because of events (usually via Groups interface)  ####
@@ -102,17 +67,3 @@ func _on_elementName_text_entered(text):
 ##################################################################################
 #########                         Inner Classes                          #########
 ##################################################################################
-
-func _create_state_or_transition(text):
-	if text == null or text.strip_edges() == "": return
-	if opened4 == OPENED_4_STATE:
-		emit_signal("stateCreateRequest", text)
-	elif opened4 == OPENED_4_TRANSITION:
-		var createNewScriptAutomatically = conditionOptions.get_selected() == 0
-		emit_signal("transitionCreateRequest", text, createNewScriptAutomatically)
-	animator.play("fadeout")
-
-
-
-
-
