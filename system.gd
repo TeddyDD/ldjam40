@@ -7,6 +7,10 @@ onready var map_ysort = get_node("/root/game/YSort")
 onready var trolley = get_node("/root/game/YSort/Trolley")
 onready var player = get_node("/root/game/YSort/player")
 
+var item_list = {
+	"Item" : load("res://item_spawner/Item.tscn")
+}
+
 func reparent(from, to):
 	var temp = from
 	from.get_parent().remove_child(from)

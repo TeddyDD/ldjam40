@@ -18,8 +18,7 @@ func drop_from_shelf(v, dir):
 	var drop_tile_v = dir.normalized().snapped(Vector2(1, 1))
 	if get_cellv(v+drop_tile_v) == 0:
 		set_cellv(v+drop_tile_v, 4)
-		var item_type = "Item"
-		var c = load("res://item_spawner/%s.tscn" % item_type).instance()
+		var c = system.item_list["Item"].instance()
 		add_child(c)
 		c.set_global_pos((v+drop_tile_v)*Vector2(64, 64))
 		c.throw(-dir)
