@@ -8,9 +8,9 @@ func set_state(i):
 		get_node("crowd_a").hide()
 		a = 0
 	if i == 1:
-		get_node("crowd_a").show()
-		get_node("crowd_a/Crowd").set_monitorable(true)
 		get_node("crowd_a/Crowd").set_enable_monitoring(true)
+		get_node("crowd_a/Crowd").set_monitorable(true)
+		get_node("crowd_a").show()
 		b = 0
 		a = 1
 	if i == 2:
@@ -42,4 +42,4 @@ func _on_Timer_timeout():
 		new_()
 
 func _on_Area2D_area_enter( area ):
-	pass # replace with function body
+	pass
