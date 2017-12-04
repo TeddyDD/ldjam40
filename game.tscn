@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=1]
+[gd_scene load_steps=9 format=1]
 
 [ext_resource path="res://game.gd" type="Script" id=1]
 [ext_resource path="res://placeholders/tileset-placeholder.tres" type="TileSet" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://trolley/Trolley.tscn" type="PackedScene" id=5]
 [ext_resource path="res://player/player.tscn" type="PackedScene" id=6]
 [ext_resource path="res://enemy/enemy.tscn" type="PackedScene" id=7]
+[ext_resource path="res://crowd/crowd.tscn" type="PackedScene" id=8]
 
 [node name="game" type="Node2D"]
 
@@ -43,7 +44,7 @@ transform/pos = Vector2( 0, 192 )
 
 [node name="item_spawner1" parent="Navigation2D/TileMap" instance=ExtResource( 4 )]
 
-transform/pos = Vector2( 192, 320 )
+transform/pos = Vector2( 192, 192 )
 
 [node name="item_spawner2" parent="Navigation2D/TileMap" instance=ExtResource( 4 )]
 
@@ -63,19 +64,58 @@ transform/pos = Vector2( 64, -320 )
 
 [node name="YSort" type="YSort" parent="."]
 
-editor/display_folded = true
 sort/enabled = true
 
 [node name="Trolley" parent="YSort" instance=ExtResource( 5 )]
 
-transform/pos = Vector2( 314.605, 244.983 )
+transform/pos = Vector2( 384, 0 )
 
 [node name="player" parent="YSort" instance=ExtResource( 6 )]
 
-transform/pos = Vector2( 491.034, 384.142 )
+transform/pos = Vector2( 320, 192 )
 
 [node name="enemy" parent="YSort" instance=ExtResource( 7 )]
 
 transform/pos = Vector2( 320, -128 )
+
+[node name="enemy1" parent="YSort" instance=ExtResource( 7 )]
+
+transform/pos = Vector2( 896, 256 )
+
+[node name="enemy2" parent="YSort" instance=ExtResource( 7 )]
+
+transform/pos = Vector2( 320, 320 )
+
+[node name="crowd" parent="YSort" instance=ExtResource( 8 )]
+
+transform/pos = Vector2( 384, 768 )
+
+[node name="crowd7" parent="YSort" instance=ExtResource( 8 )]
+
+transform/pos = Vector2( -64, 64 )
+
+[node name="crowd1" parent="YSort" instance=ExtResource( 8 )]
+
+transform/pos = Vector2( 448, 768 )
+
+[node name="crowd2" parent="YSort" instance=ExtResource( 8 )]
+
+transform/pos = Vector2( 512, 768 )
+
+[node name="crowd3" parent="YSort" instance=ExtResource( 8 )]
+
+transform/pos = Vector2( 576, 768 )
+
+[node name="crowd4" parent="YSort" instance=ExtResource( 8 )]
+
+transform/pos = Vector2( 640, 768 )
+
+[node name="crowd5" parent="YSort" instance=ExtResource( 8 )]
+
+transform/pos = Vector2( 704, 768 )
+
+[node name="crowd6" parent="YSort" instance=ExtResource( 8 )]
+
+transform/pos = Vector2( 768, 768 )
 
 
