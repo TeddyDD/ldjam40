@@ -9,8 +9,8 @@ func set_state(i):
 		a = 0
 	if i == 1:
 		get_node("crowd_a").show()
-		get_node("crowd_a/Area2D1").set_monitorable(true)
-		get_node("crowd_a/Area2D1").set_enable_monitoring(true)
+		get_node("crowd_a/Crowd").set_monitorable(true)
+		get_node("crowd_a/Crowd").set_enable_monitoring(true)
 		b = 0
 		a = 1
 	if i == 2:

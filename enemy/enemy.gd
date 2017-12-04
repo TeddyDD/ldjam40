@@ -38,3 +38,5 @@ func _on_hit_area_area_enter( area ):
 			hit_by = area.get_parent()
 		elif area.get_parent().is_active == true:
 			close_to = area.get_parent()
+	if area.get_name() == "Crowd":
+		queue_free()
