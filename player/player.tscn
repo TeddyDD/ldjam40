@@ -1,8 +1,16 @@
-[gd_scene load_steps=6 format=1]
+[gd_scene load_steps=19 format=1]
 
 [ext_resource path="res://player/player.gd" type="Script" id=1]
-[ext_resource path="res://placeholders/placeholder.png" type="Texture" id=2]
+[ext_resource path="res://graphics/tyl3_by_kyasarinn-dbvq56x.png" type="Texture" id=2]
 [ext_resource path="res://inventory.tscn" type="PackedScene" id=3]
+[ext_resource path="res://graphics/przod3_by_kyasarinn-dbvq57e.png" type="Texture" id=4]
+[ext_resource path="res://graphics/przod2_by_kyasarinn-dbvq57k.png" type="Texture" id=5]
+[ext_resource path="res://graphics/przod1_by_kyasarinn-dbvq57p.png" type="Texture" id=6]
+[ext_resource path="res://graphics/bok3_by_kyasarinn-dbvq581.png" type="Texture" id=7]
+[ext_resource path="res://graphics/bok2_by_kyasarinn-dbvq585.png" type="Texture" id=8]
+[ext_resource path="res://graphics/bok1_by_kyasarinn-dbvq58a.png" type="Texture" id=9]
+[ext_resource path="res://graphics/tyl2_by_kyasarinn-dbvq572.png" type="Texture" id=10]
+[ext_resource path="res://graphics/tyl1_by_kyasarinn-dbvq578.png" type="Texture" id=11]
 
 [sub_resource type="CircleShape2D" id=1]
 
@@ -13,6 +21,141 @@ radius = 14.4069
 
 custom_solver_bias = 0.0
 radius = 13.4763
+
+[sub_resource type="Animation" id=5]
+
+resource/name = "down"
+length = 0.8
+loop = true
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:texture")
+tracks/0/interp = 1
+tracks/0/imported = false
+tracks/0/keys = {
+"times": FloatArray( 0, 0.2, 0.4, 0.6 ),
+"transitions": FloatArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ ExtResource( 4 ), ExtResource( 5 ), ExtResource( 4 ), ExtResource( 6 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite:flip_v")
+tracks/1/interp = 1
+tracks/1/imported = false
+tracks/1/keys = {
+"times": FloatArray( 0 ),
+"transitions": FloatArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Sprite:flip_h")
+tracks/2/interp = 1
+tracks/2/imported = false
+tracks/2/keys = {
+"times": FloatArray( 0 ),
+"transitions": FloatArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+
+[sub_resource type="Animation" id=3]
+
+resource/name = "idle"
+length = 1.0
+loop = false
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:texture")
+tracks/0/interp = 1
+tracks/0/imported = false
+tracks/0/keys = {
+"times": FloatArray( 0 ),
+"transitions": FloatArray( 1 ),
+"update": 1,
+"values": [ ExtResource( 2 ) ]
+}
+
+[sub_resource type="Animation" id=6]
+
+resource/name = "left"
+length = 0.8
+loop = true
+step = 0.09
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:texture")
+tracks/0/interp = 1
+tracks/0/imported = false
+tracks/0/keys = {
+"times": FloatArray( 0, 0.2, 0.45, 0.63 ),
+"transitions": FloatArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ ExtResource( 7 ), ExtResource( 8 ), ExtResource( 9 ), ExtResource( 8 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite:flip_h")
+tracks/1/interp = 1
+tracks/1/imported = false
+tracks/1/keys = {
+"times": FloatArray( 0 ),
+"transitions": FloatArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+
+[sub_resource type="Animation" id=7]
+
+resource/name = "right"
+length = 0.8
+loop = true
+step = 0.09
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:texture")
+tracks/0/interp = 1
+tracks/0/imported = false
+tracks/0/keys = {
+"times": FloatArray( 0, 0.2, 0.45, 0.63 ),
+"transitions": FloatArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ ExtResource( 7 ), ExtResource( 8 ), ExtResource( 9 ), ExtResource( 8 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite:flip_h")
+tracks/1/interp = 1
+tracks/1/imported = false
+tracks/1/keys = {
+"times": FloatArray( 0 ),
+"transitions": FloatArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+
+[sub_resource type="Animation" id=4]
+
+resource/name = "up"
+length = 0.8
+loop = true
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:texture")
+tracks/0/interp = 1
+tracks/0/imported = false
+tracks/0/keys = {
+"times": FloatArray( 0, 0.2, 0.4, 0.6 ),
+"transitions": FloatArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ ExtResource( 2 ), ExtResource( 10 ), ExtResource( 2 ), ExtResource( 11 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite:flip_h")
+tracks/1/interp = 1
+tracks/1/imported = false
+tracks/1/keys = {
+"times": FloatArray( 0 ),
+"transitions": FloatArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
 
 [node name="player" type="KinematicBody2D" groups=[
 "target",
@@ -31,7 +174,6 @@ script/script = ExtResource( 1 )
 
 transform/pos = Vector2( 0.440125, -44.8929 )
 texture = ExtResource( 2 )
-region = true
 region_rect = Rect2( 0, 0, 42, 119 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -80,7 +222,20 @@ _update_shape_index = 0
 [node name="inventory" parent="." instance=ExtResource( 3 )]
 
 transform/pos = Vector2( 1.62109, -27.5584 )
-x_rand = Vector2( 0, 5 )
-y_rand = Vector2( 20, 10 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
+playback/process_mode = 1
+playback/default_blend_time = 0.0
+root/root = NodePath("..")
+anims/down = SubResource( 5 )
+anims/idle = SubResource( 3 )
+anims/left = SubResource( 6 )
+anims/right = SubResource( 7 )
+anims/up = SubResource( 4 )
+playback/active = true
+playback/speed = 1.0
+blend_times = [  ]
+autoplay = "idle"
 
 
