@@ -7,13 +7,18 @@ var hit_by = null
 var path = null
 var close_to = null
 var inventory
+var state_time = 0
+enum STATE {IDLE, FOLLOWING_TARGET, ON_GROUND, RUN_AWAY, ATTACK}
+var state = STATE.IDLE
 
 func _ready():
 	inventory = get_node("inventory")
 	set_process(true)
-	
+	change_state_to(STATE.IDLE)
+
 func _process(delta):
-	get_node("debug").set_text(get_node("FSM2D").getStateID())
+	get_node("debug").set_text(str(state))
+	process_state(state, delta)
 
 func _draw():
 	if path != null:
@@ -40,3 +45,111 @@ func _on_hit_area_area_enter( area ):
 			close_to = area.get_parent()
 	if area.get_name() == "Crowd":
 		queue_free()
+
+func enter_state(i):
+	state_time = 0
+	if has_method("enter_state"+str(i)):
+		call("enter_state"+str(i))
+func exit_state(i):
+	if has_method("exit_state"+str(i)):
+		call("exit_state"+str(i))
+func process_state(i, delta):
+	state_time += delta
+	if has_method("process_state"+str(i)):
+		call("process_state"+str(i), delta)
+func change_state_to(i):
+	exit_state(state)
+	enter_state(i)
+	state = i
+
+func enter_state0(): # IDLE
+	var t = get_tree().get_nodes_in_group("target")
+	var s = Sorter.new(get_pos())
+	t.sort_custom(s, "sort_by_distance")
+	taget_list = t
+func process_state0(d):
+	if cond_fund_close_target():
+		change_state_to(STATE.FOLLOWING_TARGET)
+	if cond_is_hit():
+		change_state_to(STATE.ON_GROUND)
+
+var FOLLOWING_TARGET_path = []
+var FOLLOWING_TARGET_current_point = 0
+var FOLLOWING_TARGET_taget_pos = Vector2()
+var FOLLOWING_TARGET_nav
+var FOLLOWING_TARGET_min_distance = 50
+var FOLLOWING_TARGET_speed = 200
+
+func enter_state1():
+	FOLLOWING_TARGET_taget_pos = target.get_global_pos()
+	FOLLOWING_TARGET_path = Array(system.nav.get_simple_path(get_global_pos(),FOLLOWING_TARGET_taget_pos, false))
+#	path.invert()
+	path = FOLLOWING_TARGET_path
+	for i in range(0, FOLLOWING_TARGET_path.size()):
+		FOLLOWING_TARGET_path[i] += Vector2(32,32)
+func process_state1(d):
+	var mov = FOLLOWING_TARGET_path[FOLLOWING_TARGET_current_point] - get_global_pos()
+	mov = mov.normalized() * FOLLOWING_TARGET_speed
+	move(mov * d)
+	if is_colliding():
+		var n = get_collision_normal()
+		mov = n.slide(mov * d)
+		move(mov)
+	if get_global_pos().distance_to(FOLLOWING_TARGET_path[FOLLOWING_TARGET_current_point]) < FOLLOWING_TARGET_min_distance:
+		if FOLLOWING_TARGET_path.size() > 1:
+			FOLLOWING_TARGET_path.pop_front()
+	update()
+	
+	if cond_is_hit():
+		change_state_to(STATE.ON_GROUND)
+	if cond_3s_passed():
+		change_state_to(STATE.FOLLOWING_TARGET)
+	if close_to:
+		print("CLOSE ", close_to)
+		if cond_fund_close_target():
+			change_state_to(STATE.ATTACK)
+
+func enter_state4():
+	if close_to.is_in_group("item"):
+		inventory.pick_up(close_to)
+	elif close_to.is_in_group("spawner"):
+		if not close_to.inventory.is_empty():
+			close_to.inventory.move_item_to(0, inventory)
+
+func cond_fund_close_target():
+	var i = 0
+	var tglst = taget_list
+	if tglst != []:
+		if tglst.size() > 1:
+			for t in tglst:
+				if t.is_in_group("item"):
+					break
+				if t.inventory.is_empty():
+					i += 1
+				else: break
+		if taget_list[i] != null:
+			target = taget_list[i]
+			return true
+	return false
+
+func cond_is_hit():
+	if hit_by != null:
+		prints("hit")
+		return true
+	return false;
+
+func cond_3s_passed():
+	if state_time > 3:
+		return true
+	return false
+
+func cond_close_to_target():
+	if close_to != null:
+		return true
+	return false
+
+func cond_have_item():
+	return not inventory.is_empty()
+
+func cond_no_have_item():
+	return inventory.is_empty()

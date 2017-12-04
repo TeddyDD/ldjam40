@@ -1,21 +1,8 @@
-[gd_scene load_steps=19 format=1]
+[gd_scene load_steps=6 format=1]
 
 [ext_resource path="res://enemy/enemy.gd" type="Script" id=1]
 [ext_resource path="res://placeholders/placeholder.png" type="Texture" id=2]
-[ext_resource path="res://addons/net.kivano.fsm/content/fsm.gd" type="Script" id=3]
-[ext_resource path="res://addons/net.kivano.fsm/assets/ico2d.png" type="Texture" id=4]
-[ext_resource path="res://enemy/FSM/states/iddle/iddle.tscn" type="PackedScene" id=5]
-[ext_resource path="res://enemy/FSM/states/followingTarget/followingTarget.tscn" type="PackedScene" id=6]
-[ext_resource path="res://enemy/FSM/states/Attack/Attack.tscn" type="PackedScene" id=7]
-[ext_resource path="res://enemy/FSM/states/RUN_AWAY/RUN_AWAY.tscn" type="PackedScene" id=8]
-[ext_resource path="res://enemy/FSM/states/ON_GROUND/ON_GROUND.tscn" type="PackedScene" id=9]
-[ext_resource path="res://enemy/FSM/transitions/found_close_promo/found_close_promo.tscn" type="PackedScene" id=10]
-[ext_resource path="res://enemy/FSM/transitions/close_to_player/close_to_player.tscn" type="PackedScene" id=11]
-[ext_resource path="res://enemy/FSM/transitions/have_item/have_item.tscn" type="PackedScene" id=12]
-[ext_resource path="res://enemy/FSM/transitions/is_hit/is_hit.tscn" type="PackedScene" id=13]
-[ext_resource path="res://enemy/FSM/transitions/three_seconds_passed/three_seconds_passed.tscn" type="PackedScene" id=14]
-[ext_resource path="res://enemy/FSM/transitions/not_have_item/not_have_item.tscn" type="PackedScene" id=15]
-[ext_resource path="res://inventory.tscn" type="PackedScene" id=16]
+[ext_resource path="res://inventory.tscn" type="PackedScene" id=3]
 
 [sub_resource type="CircleShape2D" id=1]
 
@@ -72,111 +59,7 @@ shape = SubResource( 1 )
 trigger = false
 _update_shape_index = 0
 
-[node name="FSM2D" type="Node2D" parent="."]
-
-editor/display_folded = true
-transform/pos = Vector2( 0, 11 )
-script/script = ExtResource( 3 )
-__meta__ = {
-"_editor_icon": ExtResource( 4 )
-}
-path2LogicRoot = NodePath("..")
-onlyActiveStateOnTheScene = true
-initManually = false
-updateMode = 1
-"Initial state:" = ""
-"Create new:/Subdirectory for FSM nodes:" = "FSM"
-"Create new:/Create state with name:" = null
-"Create new:/Create transition with name:" = null
-GraphData = {
-"Attack": Vector2( 784.5, 247 ),
-"Attack_": Vector2( 570.5, 447 ),
-"Attack__": Vector2( 570.5, 447 ),
-"ON_GROUND": Vector2( 103.5, 443 ),
-"ON_GROUND_": Vector2( 103.5, 443 ),
-"ON_GROUND__": Vector2( 103.5, 443 ),
-"RUN_AWAY": Vector2( 503.5, 617 ),
-"RUN_AWAY_": Vector2( 503.5, 617 ),
-"RUN_AWAY__": Vector2( 503.5, 617 ),
-"close_to_player": Vector2( 586.5, 344 ),
-"close_to_player_": Vector2( 586.5, 344 ),
-"close_to_player__": Vector2( 586.5, 344 ),
-"close_to_target": Vector2( 572.5, 348 ),
-"close_to_target_": Vector2( 572.5, 348 ),
-"followingTarget": Vector2( 369.5, 348 ),
-"followingTarget_": Vector2( 369.5, 348 ),
-"followingTarget__": Vector2( 369.5, 348 ),
-"found_close_player": Vector2( 605.5, 213 ),
-"found_close_player_": Vector2( 605.5, 213 ),
-"found_close_promo": Vector2( 379.5, 259.375 ),
-"found_close_promo_": Vector2( 379.5, 259.375 ),
-"found_close_promo__": Vector2( 379.5, 259.375 ),
-"found_close_target": Vector2( 370.5, 254 ),
-"found_close_target_": Vector2( 370.5, 254 ),
-"found_close_target__": Vector2( 370.5, 254 ),
-"have_item": Vector2( 569.5, 523 ),
-"have_item_": Vector2( 569.5, 523 ),
-"have_item__": Vector2( 569.5, 523 ),
-"iddle": Vector2( 408.5, 166 ),
-"iddle_": Vector2( 408.5, 166 ),
-"iddle__": Vector2( 408.5, 166 ),
-"idle": Vector2( 341.5, 170 ),
-"idle_": Vector2( 341.5, 170 ),
-"idle__": Vector2( 341.5, 170 ),
-"is_hit": Vector2( 169.5, 348 ),
-"is_hit_": Vector2( 169.5, 348 ),
-"is_hit__": Vector2( 169.5, 348 ),
-"not_have_item": Vector2( 673.5, 152 ),
-"three_seconds_passed": Vector2( 534.5, 254 ),
-"three_seconds_passed_": Vector2( 534.5, 254 ),
-"three_seconds_passed__": Vector2( 534.5, 254 )
-}
-
-[node name="States" type="Node2D" parent="FSM2D"]
-
-[node name="idle" parent="FSM2D/States" instance=ExtResource( 5 )]
-
-[node name="followingTarget" parent="FSM2D/States" instance=ExtResource( 6 )]
-
-[node name="Attack" parent="FSM2D/States" instance=ExtResource( 7 )]
-
-[node name="RUN_AWAY" parent="FSM2D/States" instance=ExtResource( 8 )]
-
-[node name="ON_GROUND" parent="FSM2D/States" instance=ExtResource( 9 )]
-
-[node name="Transitions" type="Node2D" parent="FSM2D"]
-
-[node name="found_close_target" parent="FSM2D/Transitions" instance=ExtResource( 10 )]
-
-path2SourceStates = [ NodePath(""), NodePath("../../States/idle") ]
-path2TargetState = NodePath("../../States/followingTarget")
-
-[node name="close_to_target" parent="FSM2D/Transitions" instance=ExtResource( 11 )]
-
-path2SourceStates = [ NodePath(""), NodePath("../../States/followingTarget") ]
-path2TargetState = NodePath("../../States/Attack")
-
-[node name="have_item" parent="FSM2D/Transitions" instance=ExtResource( 12 )]
-
-path2SourceStates = [ NodePath(""), NodePath("../../States/Attack") ]
-path2TargetState = NodePath("../../States/RUN_AWAY")
-
-[node name="is_hit" parent="FSM2D/Transitions" instance=ExtResource( 13 )]
-
-path2SourceStates = [ NodePath(""), NodePath("../../States/idle"), NodePath("../../States/followingTarget"), NodePath("../../States/RUN_AWAY") ]
-path2TargetState = NodePath("../../States/ON_GROUND")
-
-[node name="three_seconds_passed" parent="FSM2D/Transitions" instance=ExtResource( 14 )]
-
-path2SourceStates = [ NodePath(""), NodePath("../../States/followingTarget") ]
-path2TargetState = NodePath("../../States/idle")
-
-[node name="not_have_item" parent="FSM2D/Transitions" instance=ExtResource( 15 )]
-
-path2SourceStates = [ NodePath(""), NodePath("../../States/Attack") ]
-path2TargetState = NodePath("../../States/idle")
-
-[node name="inventory" parent="." instance=ExtResource( 16 )]
+[node name="inventory" parent="." instance=ExtResource( 3 )]
 
 [node name="debug" type="Label" parent="."]
 
